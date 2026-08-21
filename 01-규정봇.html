@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>① 규정 Q&A 봇 — 데모</title>
+<style>
+  @font-face{font-family:"Pretendard Variable";src:url("assets/PretendardVariable.woff2") format("woff2-variations");font-weight:45 920;font-style:normal;font-display:swap}
+  
+  :root{
+    --pnu-navy:#003A70; --pnu-blue:#0B5BA7; --pnu-gold:#B98E2F;
+    --surface:#fcfcfb; --page:#f9f9f7;
+    --ink:#0b0b0b; --ink-2:#52514e; --muted:#898781;
+    --grid:#e1e0d9; --baseline:#c3c2b7; --border:rgba(11,11,11,.10);
+    --s1:#2a78d6;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{font-family:"Pretendard Variable",Pretendard,"Segoe UI","Malgun Gothic",system-ui,sans-serif;letter-spacing:-0.01em;background:var(--page);color:var(--ink)}
+  header{background:var(--pnu-navy);color:#fff;padding:20px 28px;display:flex;align-items:center;gap:16px}
+  header a{color:rgba(255,255,255,.8);text-decoration:none;font-size:14px}
+  header h1{font-size:20px;font-weight:800}
+  header .sub{font-size:13px;opacity:.7;margin-left:auto}
+  header .cta{background:var(--pnu-gold);color:#fff;text-decoration:none;font-size:13.5px;font-weight:700;border-radius:8px;padding:8px 16px;white-space:nowrap}
+  .wrap{max-width:1080px;margin:28px auto;padding:0 24px;display:grid;grid-template-columns:1.15fr .85fr;gap:22px}
+  @media(max-width:880px){.wrap{grid-template-columns:1fr}}
+  .panel{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:22px}
+  .panel h2{font-size:16px;margin-bottom:4px}
+  .panel .desc{font-size:13px;color:var(--muted);margin-bottom:16px}
+
+  /* ---- 채팅 시뮬레이션 ---- */
+  .chat{display:flex;flex-direction:column;gap:14px;min-height:430px}
+  .msg{max-width:88%;padding:12px 16px;border-radius:14px;font-size:14.5px;line-height:1.7;opacity:0;transform:translateY(8px);transition:opacity .35s,transform .35s}
+  .msg.show{opacity:1;transform:none}
+  .msg.q{align-self:flex-end;background:var(--pnu-blue);color:#fff;border-bottom-right-radius:4px}
+  .msg.a{align-self:flex-start;background:#f0f4f9;border:1px solid var(--border);border-bottom-left-radius:4px}
+  .msg.a b{color:var(--pnu-navy)}
+  .typing{align-self:flex-start;display:none;gap:5px;padding:14px 18px;background:#f0f4f9;border-radius:14px;border-bottom-left-radius:4px}
+  .typing.show{display:inline-flex}
+  .typing i{width:7px;height:7px;border-radius:50%;background:var(--muted);animation:blink 1.1s infinite}
+  .typing i:nth-child(2){animation-delay:.18s}.typing i:nth-child(3){animation-delay:.36s}
+  @keyframes blink{0%,60%,100%{opacity:.25}30%{opacity:1}}
+  .src{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
+  .src span{display:inline-flex;align-items:center;gap:6px;background:#fff;border:1px solid var(--grid);border-radius:8px;padding:5px 10px;font-size:12px;color:var(--ink-2)}
+  .src span::before{content:"📄"}
+  .replay{margin-top:16px;align-self:center;background:var(--pnu-blue);color:#fff;border:none;border-radius:8px;padding:9px 22px;font-size:14px;font-weight:700;cursor:pointer;font-family:inherit}
+  .replay:hover{background:var(--pnu-navy)}
+
+  /* ---- 우측: 스탯 + 차트 ---- */
+  .tiles{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:22px}
+  .tile{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:16px}
+  .tile .v{font-size:26px;font-weight:800;color:var(--pnu-navy)}
+  .tile .k{font-size:12.5px;color:var(--ink-2);margin-top:4px;line-height:1.5}
+  .viz-root{position:relative}
+  .bar-row{display:grid;grid-template-columns:118px 1fr;align-items:center;gap:10px;margin:14px 0}
+  .bar-row .lbl{font-size:13px;color:var(--ink-2);text-align:right}
+  .bar-track{position:relative;height:26px}
+  .bar{height:100%;border-radius:0 4px 4px 0;background:var(--s1);width:0;transition:width 1s ease .3s;position:relative;cursor:default}
+  .bar.slow{background:#9ec5f4}
+  .bar .val{position:absolute;right:-8px;transform:translateX(100%);top:50%;margin-top:-9px;font-size:12.5px;font-weight:700;color:var(--ink-2);white-space:nowrap}
+  .bar .val.in{right:9px;transform:none;color:#fff}
+  .axis-note{font-size:11.5px;color:var(--muted);margin-top:10px}
+  .tip{position:fixed;pointer-events:none;background:var(--ink);color:#fff;font-size:12px;padding:6px 10px;border-radius:6px;opacity:0;transition:opacity .12s;z-index:10;white-space:nowrap}
+
+  .arch{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-top:8px}
+  .arch .node{background:#fff;border:1.5px solid var(--pnu-blue);border-radius:10px;padding:9px 13px;font-size:12.5px;font-weight:600;color:var(--pnu-navy)}
+  .arch .arr{color:var(--pnu-gold);font-weight:800}
+  .panel{position:relative}
+  .mascot{position:absolute;right:20px;top:-40px;height:70px;filter:drop-shadow(0 3px 6px rgba(0,58,112,.18));pointer-events:none;z-index:2}
+</style>
+</head>
+<body>
+<header>
+  <a href="index.html">← 허브</a>
+  <h1>① 규정 Q&A 봇</h1>
+  <div class="sub">Gemini Notebook(구 NotebookLM) · 규정/사례집 27종 전부 현행본 · 출처 기반 답변 · 연구처 부서계정 운영</div>
+  <span class="cta">🔐 실제 봇은 교내 계정 전용 — 여기서는 작동 모습만 소개</span>
+</header>
+<div class="wrap">
+  <div class="panel">
+    <h2>실제 검증된 질문으로 보는 작동 모습</h2>
+    <img class="mascot" src="assets/mascot/sanjini-question.png" alt="산지니 - 질문 있어요">
+    <div class="desc">아래 답변 2건은 실제 구축한 봇에서 검증한 내용입니다 (2026-08-10 부서계정 재구축 노트북에서 재검증)</div>
+    <div class="chat" id="chat">
+      <div class="msg q" data-t="0">연구비로 회의할 때 식비는 1인당 얼마까지 쓸 수 있나요?</div>
+      <div class="msg a" data-t="1">부산대학교 연구비 집행기준상 회의 식비는 <b>1인당 3만 원 이내</b>입니다. 청탁금지법상 한도(5만 원)와는 별개로, 연구비 집행에는 교내 기준이 우선 적용됩니다.
+        <div class="src"><span>부산대 연구비 집행기준</span><span>올바른 연구비 집행 Q&A 사례집</span></div>
+      </div>
+      <div class="msg q" data-t="2">그럼 직무관련자와 식사할 때 한도는요?</div>
+      <div class="msg a" data-t="3">직무관련자 음식물 제공은 <b>청탁금지법 기준 5만 원</b>(2026년 현행 가액 기준)이 적용됩니다. 같은 "식사"라도 <b>연구비 집행(3만 원)과 청탁금지(5만 원)는 근거 규정이 다릅니다.</b>
+        <div class="src"><span>[현행요약] 청탁금지법 가액 기준(2026)</span></div>
+      </div>
+    </div>
+    <div class="typing" id="typing"><i></i><i></i><i></i></div>
+    <button class="replay" id="replay">▶ 다시 재생</button>
+  </div>
+
+  <div>
+    <div class="tiles">
+      <div class="tile"><div class="v">27종</div><div class="k">업로드된 규정·사례집<br>(8/13 최신화 — 전부 현행본)</div></div>
+      <div class="tile"><div class="v">~30초</div><div class="k">질문 → 출처 포함 답변</div></div>
+      <div class="tile"><div class="v">0원</div><div class="k">Gemini Notebook 무료<br>연구처 부서계정으로 운영</div></div>
+      <div class="tile"><div class="v">10/10</div><div class="k">FAQ 스트레스 테스트 통과<br>(금액·한도 10문항, 2026-08-10)</div></div>
+    </div>
+
+    <div class="panel viz-root">
+      <h2>규정 확인에 걸리는 시간</h2>
+      <div class="desc">단골 질문 1건 기준 (분)</div>
+      <div class="bar-row">
+        <div class="lbl">원문 뒤지기</div>
+        <div class="bar-track"><div class="bar slow" data-w="100%" data-tip="규정집·사례집에서 직접 찾기: 약 15분"><span class="val in">15분</span></div></div>
+      </div>
+      <div class="bar-row">
+        <div class="lbl">담당자 문의</div>
+        <div class="bar-track"><div class="bar slow" data-w="53%" data-tip="담당자 확인·회신 대기: 약 8분"><span class="val">8분</span></div></div>
+      </div>
+      <div class="bar-row">
+        <div class="lbl">규정봇</div>
+        <div class="bar-track"><div class="bar" data-w="3.4%" data-tip="규정봇: 약 0.5분 (30초)"><span class="val">0.5분</span></div></div>
+      </div>
+      <div class="axis-note">※ 사무실 체감 기준 예시치 · 중요 사안은 원문·담당자 재확인 원칙</div>
+    </div>
+
+    <div class="panel" style="margin-top:22px">
+      <h2>구조 — 자산은 폴더, 봇은 언제든 재구축</h2>
+      <div class="arch">
+        <div class="node">규정 PDF 마스터 폴더</div><span class="arr">→</span>
+        <div class="node">NotebookLM 업로드</div><span class="arr">→</span>
+        <div class="node">출처 달린 답변</div>
+      </div>
+      <div class="axis-note" style="margin-top:12px">계정이 사라져도 마스터 폴더 + 매뉴얼만 있으면 30분 내 재구축 — 실제로 2026-08-10 연구처 부서계정으로 재구축해 입증</div>
+    </div>
+  </div>
+</div>
+<div class="tip" id="tip"></div>
+<script>
+  // 채팅 재생
+  const msgs=[...document.querySelectorAll('.msg')], typing=document.getElementById('typing');
+  function play(){
+    msgs.forEach(m=>m.classList.remove('show')); typing.classList.remove('show');
+    let t=400;
+    msgs.forEach((m,i)=>{
+      const isA=m.classList.contains('a');
+      if(isA){ setTimeout(()=>typing.classList.add('show'),t); t+=1400; setTimeout(()=>typing.classList.remove('show'),t); }
+      setTimeout(()=>m.classList.add('show'),t); t+=isA?2200:1100;
+    });
+  }
+  document.getElementById('replay').onclick=play;
+  window.addEventListener('load',()=>{ play();
+    document.querySelectorAll('.bar').forEach(b=>{ b.style.width=b.dataset.w; });
+  });
+  // 바 호버 툴팁
+  const tip=document.getElementById('tip');
+  document.querySelectorAll('.bar-track').forEach(tr=>{
+    const b=tr.querySelector('.bar');
+    tr.addEventListener('mousemove',e=>{ tip.textContent=b.dataset.tip; tip.style.opacity=1; tip.style.left=(e.clientX+14)+'px'; tip.style.top=(e.clientY-10)+'px'; });
+    tr.addEventListener('mouseleave',()=>tip.style.opacity=0);
+  });
+</script>
+</body>
+</html>

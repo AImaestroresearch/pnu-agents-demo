@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>② 연구공고봇 — 데모</title>
+<style>
+  @font-face{font-family:"Pretendard Variable";src:url("assets/PretendardVariable.woff2") format("woff2-variations");font-weight:45 920;font-style:normal;font-display:swap}
+  
+  :root{
+    --pnu-navy:#003A70; --pnu-blue:#0B5BA7; --pnu-gold:#B98E2F;
+    --surface:#fcfcfb; --page:#f9f9f7;
+    --ink:#0b0b0b; --ink-2:#52514e; --muted:#898781;
+    --grid:#e1e0d9; --baseline:#c3c2b7; --border:rgba(11,11,11,.10);
+    --s1:#2a78d6; --s2:#eb6834;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{font-family:"Pretendard Variable",Pretendard,"Segoe UI","Malgun Gothic",system-ui,sans-serif;letter-spacing:-0.01em;background:var(--page);color:var(--ink)}
+  header{background:var(--pnu-navy);color:#fff;padding:20px 28px;display:flex;align-items:center;gap:16px}
+  header a{color:rgba(255,255,255,.8);text-decoration:none;font-size:14px}
+  header h1{font-size:20px;font-weight:800}
+  header .live{margin-left:auto;display:flex;align-items:center;gap:8px;font-size:13px;background:rgba(255,255,255,.12);border-radius:999px;padding:6px 14px}
+  header .live i{width:8px;height:8px;border-radius:50%;background:#31d158;animation:pulse 1.6s infinite}
+  @keyframes pulse{0%,100%{opacity:1}50%{opacity:.3}}
+  .wrap{max-width:1080px;margin:28px auto;padding:0 24px;display:flex;flex-direction:column;gap:22px}
+  .panel{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:22px}
+  .panel h2{font-size:16px;margin-bottom:4px}
+  .panel .desc{font-size:13px;color:var(--muted);margin-bottom:18px}
+
+  /* ---- 파이프라인 애니메이션 ---- */
+  .pipe{display:flex;align-items:stretch;gap:0;overflow-x:auto;padding:6px 0}
+  .stage{flex:1;min-width:118px;text-align:center;position:relative;padding:0 6px}
+  .stage .icon{width:52px;height:52px;margin:0 auto;border-radius:14px;background:#eef3f9;border:1.5px solid var(--grid);display:grid;place-items:center;font-size:24px;transition:all .3s}
+  .stage.on .icon{background:var(--pnu-blue);border-color:var(--pnu-blue);transform:scale(1.12);box-shadow:0 6px 16px rgba(11,91,167,.35)}
+  .stage .t{font-size:12.5px;font-weight:700;margin-top:9px;color:var(--ink-2)}
+  .stage.on .t{color:var(--pnu-navy)}
+  .stage .d{font-size:11px;color:var(--muted);margin-top:3px;line-height:1.45}
+  .link{width:34px;align-self:center;height:2px;background:var(--grid);position:relative;top:-22px;flex:none}
+  .link i{position:absolute;top:-3px;left:0;width:8px;height:8px;border-radius:50%;background:var(--pnu-gold);opacity:0}
+  .link.on i{animation:travel .7s linear forwards}
+  @keyframes travel{0%{opacity:1;left:0}100%{opacity:1;left:26px}}
+
+  .cols{display:grid;grid-template-columns:1fr 1fr;gap:22px}
+  @media(max-width:880px){.cols{grid-template-columns:1fr}}
+
+  /* ---- 메일 카드 ---- */
+  .mail{border:1px solid var(--grid);border-radius:10px;overflow:hidden;font-size:13.5px}
+  .mail .mh{background:#f4f6f9;padding:10px 14px;border-bottom:1px solid var(--grid);color:var(--ink-2);font-size:12.5px;line-height:1.7}
+  .mail .mb{padding:14px}
+  .mail .title{font-weight:700;font-size:14.5px;color:var(--pnu-navy)}
+  .mail .meta{color:var(--muted);font-size:12px;margin:6px 0 10px}
+  .mail .dday{color:#d03b3b;font-weight:800}
+  .aibox{background:#eef4fb;border-left:3px solid var(--s1);border-radius:0 8px 8px 0;padding:10px 12px;font-size:12.5px;line-height:1.8}
+  .aibox b{color:var(--pnu-navy)}
+  .att{margin-top:10px;font-size:12px}
+  .att a{color:var(--pnu-blue);text-decoration:none}
+  .skip{margin-top:12px;padding-top:10px;border-top:1px dashed var(--grid);color:var(--muted);font-size:12px}
+
+  /* ---- 차트 ---- */
+  .viz-root{position:relative}
+  .legend{display:flex;gap:18px;font-size:12.5px;color:var(--ink-2);margin-bottom:14px}
+  .legend i{display:inline-block;width:11px;height:11px;border-radius:3px;margin-right:6px;vertical-align:-1px}
+  .chart{display:flex;align-items:flex-end;gap:26px;height:210px;padding:0 8px;border-bottom:1.5px solid var(--baseline);position:relative}
+  .gline{position:absolute;left:0;right:0;height:1px;background:var(--grid)}
+  .gline span{position:absolute;left:-6px;transform:translate(-100%,-50%);font-size:11px;color:var(--muted);font-variant-numeric:tabular-nums}
+  .col{flex:1;display:flex;flex-direction:column-reverse;align-items:center;gap:2px;position:relative;z-index:1;cursor:default}
+  .seg{width:38px;max-width:70%;transition:height .9s ease .2s;height:0}
+  .seg.a{background:var(--s1)}
+  .seg.b{background:var(--s2);border-radius:4px 4px 0 0}
+  .col .total{position:absolute;top:-24px;font-size:12.5px;font-weight:700;color:var(--ink-2)}
+  .xlab{display:flex;gap:26px;padding:8px 8px 0}
+  .xlab span{flex:1;text-align:center;font-size:12px;color:var(--muted)}
+  .tip{position:fixed;pointer-events:none;background:var(--ink);color:#fff;font-size:12px;padding:7px 11px;border-radius:6px;opacity:0;transition:opacity .12s;z-index:10;white-space:nowrap;line-height:1.6}
+
+  .tiles{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+  @media(max-width:880px){.tiles{grid-template-columns:1fr 1fr}}
+  .tile{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:16px}
+  .tile .v{font-size:24px;font-weight:800;color:var(--pnu-navy)}
+  .tile .k{font-size:12.5px;color:var(--ink-2);margin-top:4px;line-height:1.5}
+  .panel{position:relative}
+  .mascot{position:absolute;right:20px;top:-40px;height:70px;filter:drop-shadow(0 3px 6px rgba(0,58,112,.18));pointer-events:none;z-index:2}
+</style>
+</head>
+<body>
+<header>
+  <a href="index.html">← 허브</a>
+  <h1>② 연구공고봇</h1>
+  <div class="live"><i></i>실운영 중 — 연구처 부서계정 · 매일 10:00 자동 발송 · 8/3 개편 후 매일 무결점 발송(8/13 실측)</div>
+</header>
+<div class="wrap">
+
+  <div class="panel">
+    <h2>매일 아침, 사람 손 없이 벌어지는 일</h2>
+    <img class="mascot" src="assets/mascot/sanjini-megaphone.png" alt="산지니 - 새 공고 알림">
+    <div class="desc">PC가 꺼져 있어도 구글 서버(Apps Script)가 대신 실행 — 재생 버튼이 없어도 자동 반복됩니다</div>
+    <div class="pipe" id="pipe">
+      <div class="stage"><div class="icon">🏛️</div><div class="t">IRIS 조회</div><div class="d">범부처 R&D 공고<br>통합 포털</div></div>
+      <div class="link"><i></i></div>
+      <div class="stage"><div class="icon">🔍</div><div class="t">새 공고 선별</div><div class="d">본 공고 기록과 대조<br>중복 제거</div></div>
+      <div class="link"><i></i></div>
+      <div class="stage"><div class="icon">📎</div><div class="t">공고문 수집</div><div class="d">hwpx/pdf 첨부<br>자동 다운로드</div></div>
+      <div class="link"><i></i></div>
+      <div class="stage"><div class="icon">🤖</div><div class="t">AI 요약</div><div class="d">Gemini가 원문 읽고<br>추천분야까지</div></div>
+      <div class="link"><i></i></div>
+      <div class="stage"><div class="icon">📬</div><div class="t">메일 발송</div><div class="d">팀 수신<br>0건이면 생존신호</div></div>
+    </div>
+  </div>
+
+  <div class="cols">
+    <div class="panel">
+      <h2>받아보는 메일 (실제 형식)</h2>
+      <div class="desc">공고 1건 = 카드 1장 — 클릭 없이 판단 가능한 수준으로</div>
+      <div class="mail">
+        <div class="mh"><b>연구진흥과 연구공고 알림</b> · 오전 10:00<br>[연구공고봇] 새 공고 2건 (8/10)</div>
+        <div class="mb">
+          <div class="title">2026년도 산업기술 국제협력 R&D 신규지원 대상과제 공고</div>
+          <div class="meta">산업통상자원부 · 소재부품장비 | 마감 <span class="dday">D-21</span></div>
+          <div class="aibox">
+            <b>개요</b> 해외 연구기관과의 공동 R&D 지원, 과제당 연 5억 내외<br>
+            <b>신청대상</b> 기업 주관, 대학 공동연구기관 참여 가능<br>
+            <b>💡 추천분야</b> 반도체 소재·이차전지 — 공과대학 안내 권장<br>
+            <b>⚠ 주의</b> 산업체 매칭 필수, 사전등록 마감 별도(D-14)
+          </div>
+          <div class="att">📎 <a href="#" onclick="return false">공고문.hwpx</a> · <a href="#" onclick="return false">신청서식.pdf</a></div>
+          <div class="skip">다음 카드 — (요약 생략: 지정공모라 공고문 첨부 없음) ← 빈칸 대신 사유를 밝힘 (v6)</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="panel viz-root">
+      <h2>주간 신규 공고 처리량</h2>
+      <div class="desc">최근 4주 · 예시 데이터 (실운영 로그 시트에 전 건 기록)</div>
+      <div class="legend">
+        <span><i style="background:var(--s1)"></i>AI 요약 포함</span>
+        <span><i style="background:var(--s2)"></i>요약 생략 (사유 표시)</span>
+      </div>
+      <div class="chart" id="chart">
+        <div class="gline" style="bottom:33%"><span>8</span></div>
+        <div class="gline" style="bottom:66%"><span>16</span></div>
+        <div class="gline" style="bottom:99%"><span>24</span></div>
+        <div class="col" data-w="7/14주" data-a="14" data-b="4"><div class="seg a"></div><div class="seg b"></div><div class="total">18</div></div>
+        <div class="col" data-w="7/21주" data-a="17" data-b="6"><div class="seg a"></div><div class="seg b"></div><div class="total">23</div></div>
+        <div class="col" data-w="7/28주" data-a="9"  data-b="2"><div class="seg a"></div><div class="seg b"></div><div class="total">11</div></div>
+        <div class="col" data-w="8/4주"  data-a="12" data-b="4"><div class="seg a"></div><div class="seg b"></div><div class="total">16</div></div>
+      </div>
+      <div class="xlab"><span>7/14주</span><span>7/21주</span><span>7/28주</span><span>8/4주</span></div>
+    </div>
+  </div>
+
+  <div class="tiles">
+    <div class="tile"><div class="v">10:00</div><div class="k">매일 자동 실행<br>PC·계정 상태와 무관</div></div>
+    <div class="tile"><div class="v">256건</div><div class="k">최초 가동 시 씨앗 등록<br>(이후 새 공고만 알림)</div></div>
+    <div class="tile"><div class="v">v6</div><div class="k">실운영 두 달간 6차 개선<br>(중복버그·타임아웃·사유표시)</div></div>
+    <div class="tile"><div class="v">0원</div><div class="k">Apps Script + Sheets<br>+ Gmail + Gemini 무료</div></div>
+  </div>
+
+</div>
+<div class="tip" id="tip"></div>
+<script>
+  // 파이프라인 순차 점등 (무한 반복)
+  const stages=[...document.querySelectorAll('.stage')], links=[...document.querySelectorAll('.link')];
+  let idx=0;
+  function step(){
+    stages.forEach(s=>s.classList.remove('on')); links.forEach(l=>l.classList.remove('on'));
+    stages[idx].classList.add('on');
+    if(idx<links.length) setTimeout(()=>links[idx].classList.add('on'),450);
+    idx=(idx+1)%stages.length;
+  }
+  step(); setInterval(step,1300);
+
+  // 스택 바 (최대 24 기준 스케일)
+  const MAX=24, H=210;
+  document.querySelectorAll('.col').forEach(c=>{
+    c.querySelector('.seg.a').style.height=(c.dataset.a/MAX*H)+'px';
+    c.querySelector('.seg.b').style.height=(c.dataset.b/MAX*H)+'px';
+  });
+  const tip=document.getElementById('tip');
+  document.querySelectorAll('.col').forEach(c=>{
+    c.addEventListener('mousemove',e=>{
+      tip.innerHTML=`<b>${c.dataset.w}</b><br>AI 요약 포함 ${c.dataset.a}건 · 생략 ${c.dataset.b}건`;
+      tip.style.opacity=1; tip.style.left=(e.clientX+14)+'px'; tip.style.top=(e.clientY-14)+'px';
+    });
+    c.addEventListener('mouseleave',()=>tip.style.opacity=0);
+  });
+</script>
+</body>
+</html>

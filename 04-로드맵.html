@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>다음 에이전트 로드맵 — 후보 7종</title>
+<style>
+  @font-face{font-family:"Pretendard Variable";src:url("assets/PretendardVariable.woff2") format("woff2-variations");font-weight:45 920;font-style:normal;font-display:swap}
+  
+  :root{
+    --pnu-navy:#003A70; --pnu-blue:#0B5BA7; --pnu-gold:#B98E2F;
+    --surface:#fcfcfb; --page:#f9f9f7;
+    --ink:#0b0b0b; --ink-2:#52514e; --muted:#898781;
+    --grid:#e1e0d9; --baseline:#c3c2b7; --border:rgba(11,11,11,.10);
+    --s1:#2a78d6; --s2:#eb6834;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{font-family:"Pretendard Variable",Pretendard,"Segoe UI","Malgun Gothic",system-ui,sans-serif;letter-spacing:-0.01em;background:var(--page);color:var(--ink)}
+  header{background:var(--pnu-navy);color:#fff;padding:20px 28px;display:flex;align-items:center;gap:16px}
+  header a{color:rgba(255,255,255,.8);text-decoration:none;font-size:14px}
+  header h1{font-size:20px;font-weight:800}
+  header .sub{font-size:13px;opacity:.7;margin-left:auto}
+  .wrap{max-width:1080px;margin:28px auto;padding:0 24px;display:flex;flex-direction:column;gap:22px}
+  .panel{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:22px}
+  .panel h2{font-size:16px;margin-bottom:4px}
+  .panel .desc{font-size:13px;color:var(--muted);margin-bottom:18px}
+
+  /* 1순위 하이라이트 */
+  .hero-card{border:2px solid var(--pnu-gold);border-radius:14px;background:linear-gradient(135deg,#fffdf7,#fcfcfb);padding:24px;position:relative;overflow:hidden}
+  .hero-card .crown{position:absolute;top:0;right:0;background:var(--pnu-gold);color:#fff;font-size:12px;font-weight:800;padding:6px 16px;border-radius:0 0 0 12px}
+  .hero-card h2{font-size:20px;color:var(--pnu-navy)}
+  .hero-card p{font-size:14px;color:var(--ink-2);line-height:1.75;margin-top:8px;max-width:720px}
+  .flow{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-top:16px}
+  .flow .node{background:#fff;border:1.5px solid var(--pnu-blue);border-radius:10px;padding:9px 13px;font-size:12.5px;font-weight:600;color:var(--pnu-navy)}
+  .flow .node.hot{background:var(--pnu-blue);color:#fff;animation:glow 2s infinite}
+  @keyframes glow{0%,100%{box-shadow:0 0 0 rgba(11,91,167,.0)}50%{box-shadow:0 6px 18px rgba(11,91,167,.4)}}
+  .flow .arr{color:var(--pnu-gold);font-weight:800}
+  .proof-line{margin-top:14px;font-size:12.5px;color:var(--ink-2)}
+  .proof-line b{color:#006300}
+
+  /* 후보 카드 그리드 */
+  .cand{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:14px}
+  .c{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:18px;opacity:0;transform:translateY(10px);animation:rise .45s ease forwards}
+  .c:nth-child(2){animation-delay:.08s}.c:nth-child(3){animation-delay:.16s}.c:nth-child(4){animation-delay:.24s}.c:nth-child(5){animation-delay:.32s}.c:nth-child(6){animation-delay:.4s}
+  @keyframes rise{to{opacity:1;transform:none}}
+  .c h3{font-size:15px;color:var(--pnu-navy)}
+  .c p{font-size:13px;color:var(--ink-2);line-height:1.65;margin:8px 0 12px}
+  .meta{display:flex;gap:8px;flex-wrap:wrap}
+  .meta span{font-size:11.5px;font-weight:700;border-radius:6px;padding:3px 9px}
+  .m-eff{background:#e8f0fa;color:#104281}
+  .m-easy{background:#e6f4e6;color:#006300}
+  .m-mid{background:#f7efe0;color:#7a5a14}
+  .m-hard{background:#fbeaea;color:#a02c2c}
+  .m-free{background:#eef2f5;color:#52514e}
+
+  /* 효과×난이도 매트릭스 */
+  .viz-root{position:relative}
+  .matrix{position:relative;height:330px;border-left:1.5px solid var(--baseline);border-bottom:1.5px solid var(--baseline);margin:14px 8px 34px 34px}
+  .matrix .gl{position:absolute;background:var(--grid)}
+  .matrix .dot{position:absolute;transform:translate(-50%,50%);display:flex;align-items:center;gap:7px;cursor:default}
+  .matrix .dot i{width:13px;height:13px;border-radius:50%;background:var(--s1);border:2px solid #fff;box-shadow:0 1px 4px rgba(0,0,0,.25);flex:none}
+  .matrix .dot.top i{background:var(--s2);width:17px;height:17px}
+  .matrix .dot b{font-size:12px;color:var(--ink-2);white-space:nowrap;font-weight:600}
+  .matrix .dot.top b{font-weight:800;color:var(--pnu-navy)}
+  .ax{position:absolute;font-size:11.5px;color:var(--muted)}
+  .legend{display:flex;gap:18px;font-size:12.5px;color:var(--ink-2);margin-top:12px}
+  .legend i{display:inline-block;width:11px;height:11px;border-radius:50%;margin-right:6px;vertical-align:-1px}
+  .panel{position:relative}
+  .mascot{position:absolute;right:20px;top:-40px;height:70px;filter:drop-shadow(0 3px 6px rgba(0,58,112,.18));pointer-events:none;z-index:2}
+</style>
+</head>
+<body>
+<header>
+  <a href="index.html">← 허브</a>
+  <h1>다음 에이전트 로드맵</h1>
+  <div class="sub">후보 7종 · 사무실 실제 업무 + 2026 대학 행정 AI 트렌드 대조</div>
+</header>
+<div class="wrap">
+
+  <div class="hero-card">
+    <div class="crown">다음 순위 1번</div>
+    <h2>④ 교수 ↔ 공고 매칭 에이전트</h2>
+    <p>공고봇이 잡은 새 공고를 읽고 <b>"어느 교수님께 안내할지"</b>를 추천 — 일치 키워드·대표 논문·연락처까지 근거와 함께.
+       연구처의 진짜 고민(미스매칭 안내 = 불만 직결)을 푸는 <b>공고봇의 다음 화</b>입니다.</p>
+    <div class="flow">
+      <div class="node">② 공고봇이 새 공고 수신</div><span class="arr">→</span>
+      <div class="node hot">매칭 엔진</div><span class="arr">→</span>
+      <div class="node">교수 추천 + 근거 + 이메일</div>
+    </div>
+    <div class="proof-line"><b>✓ 프로토타입 검증 완료 (v0.1)</b> — Scopus 저자 10,757명 × 논문 49,859편 데이터 확보,
+      전임교원 1,312명 명단 조인 완료. 실제 공고 5건(AI보안·PFAS·가속기·기계장비 등)으로 검증하며 오탐 버그 2건 수정
+      (후보 853명 → 53명으로 정밀화, 상위권 전원 실제 해당 분야 연구자) — 전임교원만 + 연락처까지 추천 (2026-08-11)</div>
+  </div>
+
+  <div class="cand">
+    <div class="c">
+      <h3>⑦ 규정 개정 감시</h3>
+      <p>규정봇 소스 27종의 원 게시판을 주기 점검, 개정되면 알림. 규정봇의 최대 약점(옛 수치 인용)을 자동으로 막음.</p>
+      <div class="meta"><span class="m-eff">효과 ★★</span><span class="m-easy">난이도 하</span><span class="m-free">공고봇 구조 재활용</span></div>
+    </div>
+    <div class="c">
+      <h3>⑩ 인수인계 문서 생성</h3>
+      <p>매뉴얼·운영 로그를 모아 인수인계 문서 자동 조립. "담당자가 바뀌어도 돌아간다"는 우리 제1원칙과 메시지가 일치.</p>
+      <div class="meta"><span class="m-eff">효과 ★★</span><span class="m-easy">난이도 하</span><span class="m-free">무료</span></div>
+    </div>
+    <div class="c">
+      <h3>⑤ 연구실적 데이터 검증</h3>
+      <p>보고서 속 수치를 Scopus/SciVal API로 교차검증해 불일치를 표로. 실제로 대형 보고서에서 오류 11건을 잡은 실적 있음.</p>
+      <div class="meta"><span class="m-eff">효과 ★★★</span><span class="m-mid">난이도 중</span><span class="m-free">내부자료 취급 주의</span></div>
+    </div>
+    <div class="c">
+      <h3>⑥ 공문·보고서 초안</h3>
+      <p>지난 공문 양식을 학습해 초안 자동 생성. 효과는 있으나 범용 도구가 많아 차별성은 낮음.</p>
+      <div class="meta"><span class="m-eff">효과 ★★</span><span class="m-mid">난이도 중</span></div>
+    </div>
+    <div class="c">
+      <h3>⑧ 회의록 요약</h3>
+      <p>녹취 → 요약 → 액션아이템. 시중 도구가 많아 자체 개발 우선순위는 낮음.</p>
+      <div class="meta"><span class="m-eff">효과 ★★</span><span class="m-easy">난이도 하</span></div>
+    </div>
+    <div class="c">
+      <h3>⑨ 집행 사전점검</h3>
+      <p>품의·영수증을 규정봇 지식으로 사전 체크. 효과는 크지만 돈 문제라 오판 리스크 — 가장 신중하게.</p>
+      <div class="meta"><span class="m-eff">효과 ★★★</span><span class="m-hard">난이도 상</span></div>
+    </div>
+  </div>
+
+  <div class="panel viz-root">
+    <h2>어디부터 만들까 — 효과 × 난이도</h2>
+    <img class="mascot" src="assets/mascot/sanjini-idea.png" alt="산지니 - 다음 아이디어">
+    <div class="desc">오른쪽 위(효과 높고 쉬움)부터. ④는 프로토타입이 이미 있어 난이도가 사실상 내려간 상태</div>
+    <div class="matrix">
+      <div class="gl" style="left:0;right:0;top:50%;height:1px"></div>
+      <div class="gl" style="top:0;bottom:0;left:50%;width:1px"></div>
+      <div class="dot top" style="left:72%;bottom:88%"><i></i><b>④ 교수매칭</b></div>
+      <div class="dot" style="left:80%;bottom:62%"><i></i><b>⑦ 규정 개정 감시</b></div>
+      <div class="dot" style="left:74%;bottom:44%"><i></i><b>⑩ 인수인계 생성</b></div>
+      <div class="dot" style="left:44%;bottom:78%"><i></i><b>⑤ 실적 검증</b></div>
+      <div class="dot" style="left:40%;bottom:40%"><i></i><b>⑥ 공문 초안</b></div>
+      <div class="dot" style="left:64%;bottom:26%"><i></i><b>⑧ 회의록 요약</b></div>
+      <div class="dot" style="left:14%;bottom:84%"><i></i><b>⑨ 집행 사전점검</b></div>
+      <div class="ax" style="left:-26px;top:32%;writing-mode:vertical-rl;transform:rotate(180deg)">효과 →</div>
+      <div class="ax" style="right:0;bottom:-24px">쉬움 →</div>
+      <div class="ax" style="left:4px;bottom:-24px">어려움</div>
+    </div>
+    <div class="legend"><span><i style="background:var(--s2)"></i>1순위 추천</span><span><i style="background:var(--s1)"></i>후보</span></div>
+  </div>
+
+</div>
+</body>
+</html>

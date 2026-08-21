@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>연구진흥과 AI 에이전트 — 데모 허브</title>
+<style>
+  @font-face{font-family:"Pretendard Variable";src:url("assets/PretendardVariable.woff2") format("woff2-variations");font-weight:45 920;font-style:normal;font-display:swap}
+  
+  :root{
+    --pnu-navy:#003A70; --pnu-blue:#0B5BA7; --pnu-gold:#B98E2F;
+    --surface:#fcfcfb; --page:#f9f9f7;
+    --ink:#0b0b0b; --ink-2:#52514e; --muted:#898781;
+    --grid:#e1e0d9; --border:rgba(11,11,11,.10);
+    --s1:#2a78d6; --s2:#eb6834; --s3:#1baf7a;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{font-family:"Pretendard Variable",Pretendard,"Segoe UI","Malgun Gothic",system-ui,sans-serif;letter-spacing:-0.01em;background:var(--page);color:var(--ink);min-height:100vh}
+  .hero{background:linear-gradient(135deg,var(--pnu-navy) 0%,var(--pnu-blue) 100%);color:#fff;padding:56px 24px 72px;text-align:center;position:relative;overflow:hidden}
+  .hero::after{content:"";position:absolute;inset:0;background:radial-gradient(ellipse at 80% -20%,rgba(185,142,47,.25),transparent 55%)}
+  .hero *{position:relative;z-index:1}
+  .hero .eyebrow{font-size:14px;letter-spacing:.25em;opacity:.75;margin-bottom:14px}
+  .hero h1{font-size:clamp(26px,4vw,40px);font-weight:800;line-height:1.3}
+  .hero p{margin-top:14px;font-size:16px;opacity:.85}
+  .hero .principle{display:inline-flex;gap:10px;margin-top:22px;flex-wrap:wrap;justify-content:center}
+  .hero .principle span{background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.25);border-radius:999px;padding:6px 16px;font-size:13px}
+  .wrap{max-width:1060px;margin:-40px auto 60px;padding:0 24px}
+  .cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:20px}
+  .card{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:26px;text-decoration:none;color:var(--ink);box-shadow:0 4px 18px rgba(0,58,112,.08);transition:transform .18s ease, box-shadow .18s ease;display:flex;flex-direction:column;gap:12px;opacity:0;transform:translateY(14px);animation:rise .5s ease forwards}
+  .card:nth-child(2){animation-delay:.12s}.card:nth-child(3){animation-delay:.24s}
+  @keyframes rise{to{opacity:1;transform:none}}
+  .card:hover{transform:translateY(-4px);box-shadow:0 10px 28px rgba(0,58,112,.16)}
+  .card .num{width:44px;height:44px;border-radius:12px;display:grid;place-items:center;font-weight:800;font-size:19px;color:#fff}
+  .card:nth-child(1) .num{background:var(--s1)}.card:nth-child(2) .num{background:var(--s2)}.card:nth-child(3) .num{background:var(--s3)}
+  .card h2{font-size:19px}
+  .card p{font-size:14px;color:var(--ink-2);line-height:1.65;flex:1}
+  .badge{align-self:flex-start;font-size:12px;font-weight:700;border-radius:6px;padding:4px 10px}
+  .live{background:#e6f4e6;color:#006300}
+  .ready{background:#e8f0fa;color:#104281}
+  .go{font-size:14px;font-weight:700;color:var(--pnu-blue)}
+  .roadmap{margin-top:20px;display:flex;align-items:center;gap:18px;background:linear-gradient(135deg,#fffdf7,#fcfcfb);border:1.5px solid var(--pnu-gold);border-radius:14px;padding:20px 26px;text-decoration:none;color:var(--ink);box-shadow:0 4px 18px rgba(185,142,47,.12);transition:transform .18s ease;opacity:0;animation:rise .5s ease .36s forwards}
+  .roadmap:hover{transform:translateY(-3px)}
+  .roadmap .ico{width:44px;height:44px;border-radius:12px;background:var(--pnu-gold);display:grid;place-items:center;font-size:21px;flex:none}
+  .roadmap h2{font-size:17px}
+  .roadmap p{font-size:13.5px;color:var(--ink-2);margin-top:3px}
+  .roadmap .go{margin-left:auto;font-size:14px;font-weight:700;color:var(--pnu-gold);white-space:nowrap}
+  .foot{margin-top:36px;text-align:center;color:var(--muted);font-size:13px;line-height:1.8}
+  .foot code{background:#efeeea;border-radius:4px;padding:2px 8px;font-size:12px}
+  .hero-mascot{position:absolute;right:max(20px, calc(50% - 612px));bottom:0;height:108px;filter:drop-shadow(0 2px 5px rgba(0,0,0,.18));z-index:1}
+  @media(max-width:760px){.hero-mascot{display:none}}
+</style>
+</head>
+<body>
+<div class="hero">
+  <div class="eyebrow">PUSAN NATIONAL UNIVERSITY · AI 마에스트로</div>
+  <h1>연구진흥과 AI 에이전트 3종</h1>
+  <p>사람은 판단만, 반복 작업은 에이전트가 — 사무실 공통 도구</p>
+  <img class="hero-mascot" src="assets/mascot/sanjini-grad.png" alt="산지니 - 발표">
+  <div class="principle"><span>💸 전부 무료</span><span>👤 계정이 바뀌어도 복원</span><span>🌐 브라우저만 있으면 OK</span><span>🔌 PC 꺼도 자동 실행</span></div>
+</div>
+<div class="wrap">
+  <div class="cards">
+    <a class="card" href="01-규정봇.html">
+      <div class="num">①</div>
+      <h2>규정 Q&A 봇</h2>
+      <span class="badge ready">FAQ 10/10 통과 · 부서계정 운영</span>
+      <p>"이 비용, 연구비로 되나요?" — 규정·사례집 27종(전부 현행본)을 읽은 AI가 <b>출처와 함께</b> 30초 안에 답합니다. Gemini Notebook(구 NotebookLM) 기반, 환각 대신 근거.</p>
+      <span class="go">데모 보기 →</span>
+    </a>
+    <a class="card" href="02-공고봇.html">
+      <div class="num">②</div>
+      <h2>연구공고봇</h2>
+      <span class="badge live">실운영 중 · 매일 10시</span>
+      <p>정부 R&D 공고(IRIS)를 매일 자동 수집 → 새 공고만 골라 → AI가 공고문을 읽고 <b>"어느 교수님께 안내할지"</b>까지 요약해 메일로.</p>
+      <span class="go">데모 보기 →</span>
+    </a>
+    <a class="card" href="03-주간회의.html">
+      <div class="num">③</div>
+      <h2>주간회의 취합</h2>
+      <span class="badge ready">설계·기술검증 완료</span>
+      <p>팀원이 웹으로 입력 → 팀장 승인 → 회의자료 <b>한글 파일(hwpx)이 자동 병합</b>. 매주 반복되던 복사·붙여넣기·서식 정리가 사라집니다.</p>
+      <span class="go">데모 보기 →</span>
+    </a>
+  </div>
+  <a class="roadmap" href="04-로드맵.html">
+    <div class="ico">🗺️</div>
+    <div>
+      <h2>다음 에이전트 로드맵 — 후보 7종</h2>
+      <p>1순위: <b>④ 교수↔공고 매칭</b> (프로토타입 검증 완료) · 효과×난이도 비교</p>
+    </div>
+    <span class="go">보기 →</span>
+  </a>
+  <div class="foot">
+    발표장 PC에서: <code>git clone → demo\index.html 더블클릭</code> · 설치 프로그램 불필요<br>
+    부산대학교 연구진흥과 · AI 마에스트로 성과
+  </div>
+</div>
+</body>
+</html>

@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>③ 주간회의 취합 — 데모</title>
+<style>
+  @font-face{font-family:"Pretendard Variable";src:url("assets/PretendardVariable.woff2") format("woff2-variations");font-weight:45 920;font-style:normal;font-display:swap}
+  
+  :root{
+    --pnu-navy:#003A70; --pnu-blue:#0B5BA7; --pnu-gold:#B98E2F;
+    --surface:#fcfcfb; --page:#f9f9f7;
+    --ink:#0b0b0b; --ink-2:#52514e; --muted:#898781;
+    --grid:#e1e0d9; --baseline:#c3c2b7; --border:rgba(11,11,11,.10);
+    --s1:#2a78d6;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{font-family:"Pretendard Variable",Pretendard,"Segoe UI","Malgun Gothic",system-ui,sans-serif;letter-spacing:-0.01em;background:var(--page);color:var(--ink)}
+  header{background:var(--pnu-navy);color:#fff;padding:20px 28px;display:flex;align-items:center;gap:16px;flex-wrap:wrap}
+  header a{color:rgba(255,255,255,.8);text-decoration:none;font-size:14px}
+  header h1{font-size:20px;font-weight:800}
+  header .cta{margin-left:auto;background:var(--pnu-gold);color:#fff;text-decoration:none;font-size:13.5px;font-weight:700;border-radius:8px;padding:8px 16px}
+  .wrap{max-width:1080px;margin:28px auto;padding:0 24px;display:flex;flex-direction:column;gap:22px}
+  .panel{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:22px}
+  .panel h2{font-size:16px;margin-bottom:4px}
+  .panel .desc{font-size:13px;color:var(--muted);margin-bottom:18px}
+
+  /* ---- 주간 타임라인 ---- */
+  .week{position:relative;padding:10px 0 4px}
+  .rail{position:absolute;top:34px;left:4%;right:4%;height:3px;background:var(--grid);border-radius:2px}
+  .rail .fill{height:100%;width:0;background:var(--pnu-blue);border-radius:2px;transition:width .8s ease}
+  .days{display:flex;justify-content:space-between;position:relative}
+  .day{width:19%;text-align:center}
+  .dot{width:46px;height:46px;margin:0 auto;border-radius:50%;background:var(--surface);border:2.5px solid var(--grid);display:grid;place-items:center;font-size:19px;position:relative;z-index:1;transition:all .3s}
+  .day.on .dot{border-color:var(--pnu-blue);background:var(--pnu-blue);transform:scale(1.12);box-shadow:0 6px 16px rgba(11,91,167,.3)}
+  .day .dn{font-size:13px;font-weight:800;margin-top:9px;color:var(--muted)}
+  .day.on .dn{color:var(--pnu-navy)}
+  .day .dd{font-size:12px;color:var(--ink-2);margin-top:3px;line-height:1.55;min-height:54px}
+  .day .tag{display:inline-block;font-size:10.5px;font-weight:700;border-radius:5px;padding:2px 8px;margin-top:5px;opacity:0;transition:opacity .3s}
+  .day.on .tag{opacity:1}
+  .tag.auto{background:#e8f0fa;color:#104281}
+  .tag.human{background:#f7efe0;color:#7a5a14}
+
+  .cols{display:grid;grid-template-columns:1fr 1fr;gap:22px}
+  @media(max-width:880px){.cols{grid-template-columns:1fr}}
+
+  /* ---- 제출 현황 ---- */
+  .roster{display:flex;flex-direction:column;gap:9px}
+  .person{display:grid;grid-template-columns:74px 1fr 84px;align-items:center;gap:10px;font-size:13.5px}
+  .person .bar-track{height:22px;background:#f1f0ec;border-radius:0 4px 4px 0;overflow:hidden}
+  .person .bar{height:100%;width:0;background:var(--s1);border-radius:0 4px 4px 0;transition:width .8s ease}
+  .person .st{font-size:12px;font-weight:700}
+  .st.ok{color:#006300}.st.wait{color:var(--muted)}
+  .sum{margin-top:14px;font-size:13px;color:var(--ink-2)}
+  .sum b{color:var(--pnu-navy);font-size:17px}
+
+  /* ---- 절감 차트 ---- */
+  .viz-root{position:relative}
+  .bar-row{display:grid;grid-template-columns:130px 1fr;align-items:center;gap:10px;margin:14px 0}
+  .bar-row .lbl{font-size:13px;color:var(--ink-2);text-align:right}
+  .bar-row .track{position:relative;height:26px}
+  .bar-row .b{position:relative;height:100%;border-radius:0 4px 4px 0;width:0;transition:width 1s ease .3s;cursor:default}
+  .b.old{background:#9ec5f4}.b.new{background:var(--s1)}
+  .b .val{position:absolute;right:-8px;transform:translateX(100%);top:50%;margin-top:-9px;font-size:12.5px;font-weight:700;color:var(--ink-2);white-space:nowrap}
+  .b .val.in{right:9px;transform:none;color:#fff}
+  .axis-note{font-size:11.5px;color:var(--muted);margin-top:10px}
+  .tip{position:fixed;pointer-events:none;background:var(--ink);color:#fff;font-size:12px;padding:6px 10px;border-radius:6px;opacity:0;transition:opacity .12s;z-index:10;white-space:nowrap}
+
+  .proof{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+  @media(max-width:880px){.proof{grid-template-columns:1fr}}
+  .tile{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:16px}
+  .tile .v{font-size:20px;font-weight:800;color:var(--pnu-navy)}
+  .tile .k{font-size:12.5px;color:var(--ink-2);margin-top:4px;line-height:1.6}
+  .panel{position:relative}
+  .mascot{position:absolute;right:20px;top:-40px;height:70px;filter:drop-shadow(0 3px 6px rgba(0,58,112,.18));pointer-events:none;z-index:2}
+</style>
+</head>
+<body>
+<header>
+  <a href="index.html">← 허브</a>
+  <h1>③ 주간회의 취합</h1>
+  <a class="cta" href="../agents/03-주간회의취합/웹앱목업.html" target="_blank">🖥️ 실제 웹앱 목업 열기 (v14)</a>
+</header>
+<div class="wrap">
+
+  <div class="panel">
+    <h2>일주일의 흐름 — 사람은 쓰고 승인만, 나머지는 자동</h2>
+    <img class="mascot" src="assets/mascot/friend-laptop.png" alt="산지니 프렌즈 - 웹으로 입력">
+    <div class="desc">회의 날짜를 바꾸면 요청·마감 시각이 자동 재계산됩니다</div>
+    <div class="week">
+      <div class="rail"><div class="fill" id="fill"></div></div>
+      <div class="days" id="days">
+        <div class="day"><div class="dot">✉️</div><div class="dn">월</div><div class="dd">담당자 확인 메일<br>"이번 주 진행할까요?"</div><span class="tag human">승인 클릭 1회</span></div>
+        <div class="day"><div class="dot">📢</div><div class="dn">화 09:30</div><div class="dd">팀원 6명에게<br>작성 요청 자동 발송</div><span class="tag auto">자동</span></div>
+        <div class="day"><div class="dot">📝</div><div class="dn">화~수</div><div class="dd">웹에서 자유 입력<br>서식은 시스템이 정리</div><span class="tag human">각자 5분</span></div>
+        <div class="day"><div class="dot">⏰</div><div class="dn">수 14:00</div><div class="dd">마감 → 팀장 승인 →<br>hwpx 자동 병합·저장</div><span class="tag auto">자동</span></div>
+        <div class="day"><div class="dot">🤝</div><div class="dn">목 10:00</div><div class="dd">완성된 회의자료로<br>회의만 하면 끝</div><span class="tag human">회의</span></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="cols">
+    <div class="panel">
+      <h2>제출 현황 (예시 화면)</h2>
+      <div class="desc">누가 냈는지 실시간 확인 — 재촉 전화가 사라집니다</div>
+      <div class="roster" id="roster">
+        <div class="person"><span>팀원 A</span><div class="bar-track"><div class="bar" data-w="100%"></div></div><span class="st ok">✓ 제출·승인</span></div>
+        <div class="person"><span>팀원 B</span><div class="bar-track"><div class="bar" data-w="100%"></div></div><span class="st ok">✓ 제출·승인</span></div>
+        <div class="person"><span>팀원 C</span><div class="bar-track"><div class="bar" data-w="100%"></div></div><span class="st ok">✓ 제출</span></div>
+        <div class="person"><span>팀원 D</span><div class="bar-track"><div class="bar" data-w="70%"></div></div><span class="st wait">작성 중</span></div>
+        <div class="person"><span>팀원 E</span><div class="bar-track"><div class="bar" data-w="0%"></div></div><span class="st wait">대기</span></div>
+        <div class="person"><span>팀원 F</span><div class="bar-track"><div class="bar" data-w="100%"></div></div><span class="st ok">✓ 제출</span></div>
+      </div>
+      <div class="sum">제출 <b>4</b> / 6명 · 마감까지 <b>2시간 10분</b> — 마감이 지나면 버튼이 "지각 제출(팀장 승인 요청)"로 자동 전환</div>
+    </div>
+
+    <div class="panel viz-root">
+      <h2>취합 담당자의 한 주 작업시간</h2>
+      <div class="desc">회의 1회 기준 (분)</div>
+      <div class="bar-row">
+        <div class="lbl">수작업 취합</div>
+        <div class="track"><div class="b old" data-w="100%" data-tip="메일 회수→복붙→서식 정리→표지·회차 수정: 약 90분"><span class="val in">90분</span></div></div>
+      </div>
+      <div class="bar-row">
+        <div class="lbl">자동 취합</div>
+        <div class="track"><div class="b new" data-w="11%" data-tip="병합본 확인만: 약 10분"><span class="val">10분</span></div></div>
+      </div>
+      <div class="axis-note">※ 예시치 · 연 48회 기준 약 64시간 절감 — 표지 회차·날짜, 표 행 삽입, 계 재계산까지 전부 자동</div>
+      <h2 style="margin-top:26px">왜 hwpx가 핵심인가</h2>
+      <div class="axis-note" style="margin-top:8px;line-height:1.9">
+        회의자료는 결국 <b>한글(HWP) 문서</b>로 남아야 함 → hwpx는 zip+XML이라 서버(Apps Script)에서 직접 생성 가능.<br>
+        문단 치환 · 표 행 삽입 · 표지(회차/날짜) 자동 생성 <b>3종 모두 실제 한글 프로그램에서 열림 검증 완료</b>.
+      </div>
+    </div>
+  </div>
+
+  <div class="proof">
+    <div class="tile"><div class="v">검증 3종 통과 ✓</div><div class="k">hwpx 병합 엔진 전 구간(표지·문단·표·압축)을 실물 한글에서 확인</div></div>
+    <div class="tile"><div class="v">목업 v14</div><div class="k">부산대 공식 컬러·팀장 검토 탭·지각 제출 로직까지 — 목업이 곧 설계도</div></div>
+    <div class="tile"><div class="v">G드라이브 저장 ✓</div><div class="k">기존 팀 폴더 규칙 그대로 자동 저장 — 덮어쓰기·삭제 코드 자체가 없음</div></div>
+  </div>
+
+</div>
+<div class="tip" id="tip"></div>
+<script>
+  // 주간 타임라인 순차 진행 (무한 반복)
+  const days=[...document.querySelectorAll('.day')], fill=document.getElementById('fill');
+  let i=0;
+  function tick(){
+    days.forEach(d=>d.classList.remove('on'));
+    days[i].classList.add('on');
+    fill.style.width=(i/(days.length-1)*100)+'%';
+    i=(i+1)%days.length;
+  }
+  tick(); setInterval(tick,1700);
+  window.addEventListener('load',()=>{
+    document.querySelectorAll('.bar,.b').forEach(b=>{ if(b.dataset.w) b.style.width=b.dataset.w; });
+  });
+  const tip=document.getElementById('tip');
+  document.querySelectorAll('.track').forEach(tr=>{
+    const b=tr.querySelector('.b');
+    tr.addEventListener('mousemove',e=>{ tip.textContent=b.dataset.tip; tip.style.opacity=1; tip.style.left=(e.clientX+14)+'px'; tip.style.top=(e.clientY-10)+'px'; });
+    tr.addEventListener('mouseleave',()=>tip.style.opacity=0);
+  });
+</script>
+</body>
+</html>
