@@ -64,7 +64,17 @@ PUBLIC_TEXT = [
     ('<span class="tag">시연본</span>', '<span class="tag">공개판</span>'),
     ('세 가지 도구를 부서에서 실제로 쓰고 있고, 이 페이지는 그 모습을 보여 드리는 시연본입니다. 실제 운영본은 학교 계정 안에서 따로 돌아갑니다.',
      '세 가지 도구를 부서에서 실제로 쓰고 있고, 이 화면은 누구나 쓰실 수 있는 공개판입니다. 공고 대시보드와 취합 데모는 출구 버튼으로 실제 화면이 열리고, 규정봇은 부서 안에서만 열립니다. 소스 코드는 첫 화면에서 받으실 수 있습니다.'),
+    ('<p class="psub">공개된 지침·기준에서 물어보신 항목을 찾아 근거와 함께 보여 드립니다. 이 화면은 검색이고, 실제 운영 중인 규정봇은 자료 전체를 읽고 답합니다.</p>',
+     '<p class="psub">실제 규정봇(제미나이 노트북, 공개 규정 30종)에 물어본 질문과 답을 글자 그대로 옮겼습니다. 답마다 출처 번호가 붙고, 넣지 않은 내용은 「없다」고 답합니다.</p>'),
+    ('<p class="psub">사람이 공고 사이트를 뒤지는 대신 봇이 찾아 읽고 요약해 보냅니다. 아래는 형식을 보여 드리는 <b>예시</b>입니다.</p>',
+     '<p class="psub">사람이 공고 사이트를 뒤지는 대신 봇이 찾아 읽고 요약해 보냅니다. 아래는 공고봇이 <b>실제로 모아 요약한 공고</b>를 글자 그대로 옮긴 것입니다. 공고문이 비어 있으면 「명시 없음」이라고 적습니다.</p>'),
 ]
+
+# 실제 기록(공개판만) — 공개판/실제_규정봇.json · 실제_공고.json
+def read_real():
+    qa = json.load(open(os.path.join(PUB, '실제_규정봇.json'), encoding='utf-8'))
+    notices = json.load(open(os.path.join(PUB, '실제_공고.json'), encoding='utf-8'))
+    return {'date': qa['date'], 'qa': qa['qa'], 'notices': notices}
 
 src = open(SRC, encoding='utf-8').read()
 
@@ -96,6 +106,9 @@ if PUBLIC:
     src = src.replace("const MODE = '__MODE__';", "const MODE = 'public';")
     src = src.replace('const LINKS = __LINKS__;', 'const LINKS = ' + json.dumps(links, ensure_ascii=False) + ';')
     src = src.replace('/*__GAS__*/', GAS_DEMO)
+    real = read_real()
+    print('공개판: 실제 규정봇 기록 %d건 · 실제 공고 %d건' % (len(real['qa']), len(real['notices'])))
+    src = src.replace('const REAL = __REAL__;', 'const REAL = ' + json.dumps(real, ensure_ascii=False) + ';')
 elif DEPLOY:
     links = read_links()
     filled = [k for k, v in links.items() if v['url']]
@@ -113,7 +126,8 @@ else:
     src = src.replace("const MODE = '__MODE__';", "const MODE = 'demo';")
     src = src.replace('const LINKS = __LINKS__;', 'const LINKS = ' + json.dumps(EMPTY_LINKS, ensure_ascii=False) + ';')
     src = src.replace('/*__GAS__*/', GAS_DEMO)
-for tok in ('__MODE__', '__LINKS__', '/*__GAS__*/'):
+src = src.replace('const REAL = __REAL__;', 'const REAL = {"qa": [], "notices": []};')   # 시연본·운영판은 빈 값
+for tok in ('__MODE__', '__LINKS__', '/*__GAS__*/', '__REAL__'):
     assert tok not in src, '토큰이 남음: ' + tok
 
 # 1) 이 화면에 실제로 쓰이는 글자만 모은다 (+ 안전하게 기본 문장부호·숫자·영문)
