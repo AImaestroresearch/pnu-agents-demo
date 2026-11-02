@@ -1,0 +1,1287 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>연구진흥과 창구 · 성과공유회 시연</title>
+<meta name="robots" content="noindex, nofollow"><!-- 링크로는 누구나, 검색에는 안 걸리게(11/16에 내림) -->
+<style>
+/* 폰트는 쓰는 글자만 골라 이 파일에 심었다 — 웹으로 열어도, 인터넷이 끊겨도 같은 모습 */
+@font-face{font-family:'PN';font-weight:400;font-display:swap;src:url(__FONT400__) format('woff2')}
+@font-face{font-family:'PN';font-weight:800;font-display:swap;src:url(__FONT800__) format('woff2')}
+
+:root{
+  /* 부산대 공식 교색 #005BAA 기준 (PNU 비주얼 가이드) */
+  --pnu:#005BAA; --pnu-lit:#0077C8; --pnu-deep:#1D4F91; --gold:#C9A227; --green:#00A651;
+  --glow:#4DD0FF; --glow-2:#8AE1FF;
+  --bg0:#040914; --bg1:#0A1424; --bg2:#0E1C31;
+  --ink:#EAF2FB; --ink2:#B7C8DE; --muted:#7D90AB;
+  --line:rgba(140,180,230,.16); --line2:rgba(140,180,230,.30);
+  --glass:rgba(16,30,52,.62);
+  --ok:#3DDC97; --warn:#FFC24B; --bad:#FF7A6B;
+  --r:18px;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{min-height:100%}
+body{background:var(--bg0);color:var(--ink);font-family:'PN','Pretendard','Malgun Gothic','Apple SD Gothic Neo',sans-serif;
+  font-size:16px;line-height:1.65;-webkit-font-smoothing:antialiased;-webkit-text-size-adjust:100%;overflow-x:hidden;
+  letter-spacing:-.015em}
+button{font:inherit;color:inherit;cursor:pointer;border:0;background:none}
+b,strong{font-weight:800}
+
+/* ── 우주·신경망 배경 ── */
+#sky{position:fixed;inset:0;z-index:0;pointer-events:none}
+.aurora{position:fixed;inset:0;z-index:0;pointer-events:none;overflow:hidden}
+.aurora i{position:absolute;border-radius:50%;filter:blur(90px);opacity:.55;animation:float 22s ease-in-out infinite alternate}
+.aurora i:nth-child(1){width:640px;height:640px;left:50%;top:-260px;transform:translateX(-50%);background:rgba(0,91,170,.55)}
+.aurora i:nth-child(2){width:420px;height:420px;left:8%;top:34%;background:rgba(77,208,255,.18);animation-delay:-7s}
+.aurora i:nth-child(3){width:380px;height:380px;right:4%;top:56%;background:rgba(29,79,145,.38);animation-delay:-13s}
+@keyframes float{from{transform:translate(-50%,0) scale(1)}to{transform:translate(-46%,34px) scale(1.12)}}
+.grid-lines{position:fixed;inset:0;z-index:0;pointer-events:none;opacity:.35;
+  background-image:linear-gradient(rgba(120,170,220,.06) 1px,transparent 1px),linear-gradient(90deg,rgba(120,170,220,.06) 1px,transparent 1px);
+  background-size:52px 52px;mask-image:radial-gradient(ellipse at 50% 24%,#000 0%,transparent 72%)}
+
+.wrap{position:relative;z-index:1;max-width:820px;margin:0 auto;padding:0 18px 70px}
+
+/* ── 상단 띠 ── */
+.band{position:relative;z-index:2;background:linear-gradient(90deg,rgba(0,91,170,.92),rgba(29,79,145,.92));
+  color:#DCEEFF;font-size:12.5px;padding:9px 16px;text-align:center;line-height:1.5;
+  border-bottom:1px solid rgba(140,200,255,.22);backdrop-filter:blur(8px)}
+.band b{color:#fff}
+
+header{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;padding:20px 0 4px}
+.brand{display:flex;align-items:center;gap:11px}
+/* 부산대 상징(시그니처의 원형 마크) — 학교 색이 어두운 바탕에 묻히지 않게 흰 원 위에 */
+.brand .mk{width:40px;height:40px;flex:none;border-radius:50%;background:#fff;display:grid;place-items:center;
+  box-shadow:0 0 0 1px rgba(138,225,255,.45),0 0 16px rgba(77,208,255,.38)}
+.brand .mk img{width:90%;height:90%;display:block}
+.brand h1{font-size:18px;font-weight:800;letter-spacing:-.03em}
+.brand .tag{font-size:10.5px;font-weight:800;color:var(--glow-2);border:1px solid rgba(77,208,255,.4);
+  border-radius:999px;padding:2px 9px;margin-left:7px;vertical-align:2px;letter-spacing:.02em}
+.brand small{display:block;font-size:11.5px;color:var(--muted);font-weight:400}
+header .org{font-size:11.5px;color:var(--muted);text-align:right;line-height:1.5}
+
+/* ── 히어로: 산지니와 동료들 ── */
+.hero{text-align:center;padding:26px 0 6px}
+.orbit{position:relative;width:clamp(210px,54vw,286px);height:clamp(210px,54vw,286px);margin:0 auto 6px;container-type:size}
+.orbit .ring{position:absolute;inset:0;border-radius:50%;border:1px solid rgba(120,190,255,.16)}
+.orbit .ring.r2{inset:22px;border-color:rgba(120,190,255,.10)}
+.orbit .ring.r3{inset:44px;border-style:dashed;border-color:rgba(77,208,255,.13)}
+.orbit .spin{position:absolute;inset:0;animation:spin 34s linear infinite}
+.orbit .halo{position:absolute;left:50%;top:50%;width:62%;height:62%;transform:translate(-50%,-50%);border-radius:50%;
+  background:radial-gradient(circle,rgba(77,208,255,.30),rgba(0,91,170,.10) 55%,transparent 72%);animation:pulse 4.6s ease-in-out infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+@keyframes pulse{0%,100%{opacity:.7;transform:translate(-50%,-50%) scale(1)}50%{opacity:1;transform:translate(-50%,-50%) scale(1.07)}}
+.sanjini{position:absolute;left:50%;top:50%;width:41%;aspect-ratio:335/433;transform:translate(-50%,-52%);
+  filter:drop-shadow(0 12px 30px rgba(0,91,170,.65));animation:bob 5.2s ease-in-out infinite}
+@keyframes bob{0%,100%{transform:translate(-50%,-52%)}50%{transform:translate(-50%,-58%)}}
+/* 움직이는 산지니(9/28): 공식 정면 그림을 날개·몸·눈 세 겹으로 — 깜빡임 · 날개 인사 · 갸웃 · 폴짝 */
+.sanjini .sj-in{position:absolute;inset:0;transform-origin:50% 97%;transition:transform .45s cubic-bezier(.3,1.4,.5,1)}
+.sanjini img{position:absolute;inset:0;width:100%;height:100%;display:block;pointer-events:none;user-select:none;-webkit-user-drag:none}
+.sanjini .sj-wing{transform-origin:65.27% 72.49%}
+.sanjini .sj-blink{opacity:0;animation:sjBlink 7.2s infinite}
+@keyframes sjBlink{0%,39%,43%,86%,89.5%,92%,95.5%,100%{opacity:0}40%,42%,87%,88.5%,93%,94.5%{opacity:1}}
+.sanjini.wave .sj-wing,.sanjini.joy .sj-wing{animation:sjWave 1.3s ease-in-out}
+@keyframes sjWave{0%,100%{transform:rotate(0)}18%{transform:rotate(-15deg)}36%{transform:rotate(4deg)}54%{transform:rotate(-13deg)}74%{transform:rotate(3deg)}}
+.sanjini.think .sj-in{transform:rotate(-7deg)}
+.sanjini.joy .sj-in{animation:sjHop .85s cubic-bezier(.3,1.45,.5,1)}
+.sanjini.joy .sj-blink{animation:none;opacity:1}
+@keyframes sjHop{0%,100%{transform:translateY(0) scale(1,1)}16%{transform:translateY(2%) scale(1.06,.93)}
+  46%{transform:translateY(-15%) scale(.97,1.04)}72%{transform:translateY(0) scale(1.04,.96)}}
+.sj-dots{position:absolute;right:-20%;top:0;display:flex;gap:3px;padding:6px 8px;border-radius:11px 11px 11px 3px;
+  background:rgba(13,26,46,.92);border:1px solid rgba(77,208,255,.45);opacity:0;transform:scale(.6);transform-origin:0 100%;transition:.25s}
+.sj-dots i{width:4px;height:4px;border-radius:50%;background:#8AE1FF;animation:sjDot 1s infinite}
+.sj-dots i:nth-child(2){animation-delay:.15s}.sj-dots i:nth-child(3){animation-delay:.3s}
+.sanjini.think .sj-dots{opacity:1;transform:scale(1)}
+@keyframes sjDot{0%,100%{opacity:.3;transform:translateY(0)}50%{opacity:1;transform:translateY(-2px)}}
+.sj-spark i{position:absolute;left:50%;top:28%;width:6px;height:6px;margin:-3px 0 0 -3px;border-radius:50%;background:#8AE1FF;
+  box-shadow:0 0 9px #4DD0FF;opacity:0}
+.sj-spark i:nth-child(1){--dx:-44px;--dy:-26px}.sj-spark i:nth-child(2){--dx:40px;--dy:-34px}
+.sj-spark i:nth-child(3){--dx:-36px;--dy:18px}.sj-spark i:nth-child(4){--dx:46px;--dy:10px}
+.sanjini.joy .sj-spark i{animation:sjSpark .9s ease-out}
+@keyframes sjSpark{0%{opacity:0;transform:translate(0,0) scale(.4)}25%{opacity:1}100%{opacity:0;transform:translate(var(--dx),var(--dy)) scale(1.1)}}
+.mate{position:absolute;width:48px;height:48px;left:50%;top:50%;margin:-24px 0 0 -24px;transform-origin:50% 50%}
+.mate .in{width:100%;height:100%;border-radius:15px;display:grid;place-items:center;position:relative;
+  background:var(--glass);border:1px solid var(--line2);backdrop-filter:blur(9px);
+  box-shadow:0 6px 22px rgba(0,0,0,.45),inset 0 1px 0 rgba(255,255,255,.07);animation:spinBack 34s linear infinite}
+.mate svg{width:21px;height:21px}
+.mate .lb{position:absolute;bottom:-17px;left:50%;transform:translateX(-50%);font-size:10px;font-weight:800;color:var(--glow-2);white-space:nowrap;letter-spacing:.02em;text-shadow:0 1px 6px rgba(0,0,0,.8)}
+@keyframes spinBack{to{transform:rotate(-360deg)}}
+
+h2.big{font-size:clamp(25px,6.4vw,40px);font-weight:800;letter-spacing:-.045em;line-height:1.16;word-break:keep-all;margin-top:6px}
+h2.big em{font-style:normal;background:linear-gradient(100deg,var(--glow-2),var(--pnu-lit) 60%,var(--glow));
+  -webkit-background-clip:text;background-clip:text;color:transparent}
+.hero p.sub{color:var(--ink2);font-size:14.5px;margin-top:11px;word-break:keep-all}
+.kicker{display:inline-flex;align-items:center;gap:7px;font-size:11.5px;font-weight:800;color:var(--glow-2);
+  letter-spacing:.06em;border:1px solid rgba(77,208,255,.3);border-radius:999px;padding:4px 13px;margin-bottom:14px;
+  background:rgba(77,208,255,.07)}
+.kicker i{width:6px;height:6px;border-radius:50%;background:var(--glow);box-shadow:0 0 10px var(--glow);animation:blink 2.2s infinite}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.25}}
+
+/* ── 입력창 ── */
+.askbox{position:relative;margin-top:26px;border-radius:24px;padding:1px;
+  background:linear-gradient(135deg,rgba(77,208,255,.55),rgba(0,91,170,.25) 45%,rgba(77,208,255,.14));
+  box-shadow:0 22px 50px rgba(0,20,45,.6)}
+.askbox .inner{background:linear-gradient(180deg,rgba(13,26,46,.94),rgba(10,20,36,.94));border-radius:23px;padding:12px 12px 12px 18px;
+  backdrop-filter:blur(12px)}
+.askbox:focus-within{box-shadow:0 0 0 4px rgba(77,208,255,.16),0 22px 50px rgba(0,20,45,.65)}
+.askbox textarea{width:100%;border:0;outline:0;resize:none;background:transparent;color:var(--ink);font:inherit;font-size:16.5px;
+  line-height:1.5;min-height:28px;max-height:130px;padding:6px 2px;overflow-y:hidden}
+.askbox textarea::placeholder{color:#64789A}
+.askbox .row{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-top:4px}
+.askbox .row small{color:var(--muted);font-size:11.5px}
+.askbox .go{width:38px;height:38px;border-radius:50%;flex:none;display:grid;place-items:center;font-size:17px;font-weight:800;
+  background:linear-gradient(140deg,var(--glow),var(--pnu));color:#04121F;box-shadow:0 6px 20px rgba(77,208,255,.38);transition:.18s}
+.askbox .go:hover{transform:translateY(-1px) scale(1.04);box-shadow:0 10px 26px rgba(77,208,255,.5)}
+
+.chips{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin-top:16px}
+.chip{border:1px solid var(--line);background:rgba(18,34,58,.55);border-radius:999px;padding:8px 14px;font-size:13px;color:var(--ink2);
+  backdrop-filter:blur(7px);transition:.16s}
+.chip:hover{border-color:rgba(77,208,255,.55);color:#fff;background:rgba(0,91,170,.3);transform:translateY(-1px)}
+
+/* ── 출구 카드 ── */
+.exits{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:30px}
+@media (max-width:660px){.exits{grid-template-columns:1fr}}
+.exit{position:relative;border-radius:var(--r);padding:1px;background:linear-gradient(160deg,rgba(120,190,255,.30),rgba(120,190,255,.05));
+  transition:.2s;text-align:left}
+.exit .in{background:linear-gradient(170deg,rgba(15,29,50,.92),rgba(10,20,36,.92));border-radius:calc(var(--r) - 1px);
+  padding:17px 16px;height:100%;backdrop-filter:blur(10px)}
+.exit:hover{transform:translateY(-3px);background:linear-gradient(160deg,rgba(77,208,255,.7),rgba(0,91,170,.25))}
+.exit .ic{width:38px;height:38px;border-radius:12px;display:grid;place-items:center;margin-bottom:11px;
+  background:rgba(77,208,255,.1);border:1px solid rgba(77,208,255,.25)}
+.exit .ic svg{width:19px;height:19px;color:var(--glow-2)}
+.exit .n{font-size:10px;font-weight:800;color:var(--glow-2);letter-spacing:.14em;display:block;margin-bottom:4px}
+.exit b{display:block;font-size:15.5px;letter-spacing:-.02em}
+.exit small{display:block;color:var(--muted);font-size:12.5px;margin-top:5px;line-height:1.55}
+
+/* ── QR ── */
+/* 11/2 공개판: 쓰는 법 + 소스 받기 (공개판에만 들어감) */
+.pub{margin-top:28px;border-radius:var(--r);border:1px solid var(--line2);background:rgba(13,26,46,.55);padding:18px 18px 14px;backdrop-filter:blur(8px)}
+.pub > b{display:block;font-size:14px;color:var(--glow-2);letter-spacing:.04em}
+.pub ol{margin:10px 0 4px;padding-left:20px;color:var(--ink2);font-size:13.5px;line-height:1.65}
+.pub ol li{margin:4px 0}
+.pub ol b{color:#fff}
+.pub .src{display:grid;gap:8px;margin-top:10px}
+.pub .src .live{margin:0}
+.pub > small{display:block;color:var(--muted);font-size:11.5px;margin-top:10px}
+.qr{margin-top:28px;border-radius:var(--r);border:1px dashed var(--line2);background:rgba(13,26,46,.5);padding:18px;text-align:center;backdrop-filter:blur(8px)}
+.qr b{display:block;font-size:12.5px;color:var(--glow-2);letter-spacing:.06em}
+.qr .addr{font-size:19px;font-weight:800;color:#fff;margin-top:7px;overflow-wrap:anywhere;letter-spacing:-.02em}
+.qr .addr .nw{white-space:nowrap}   /* 폰에선 「…github.io/」 뒤에서만 줄바꿈(하이픈에서 끊기면 주소를 잘못 칠 수 있음) */
+.qr img{width:158px;height:158px;margin:12px auto 0;display:none;border-radius:12px;background:#fff;padding:7px}
+.qr small{display:block;color:var(--muted);font-size:11.5px;margin-top:9px}
+
+/* ── 패널 ── */
+.panel{display:none}
+.panel.on{display:block;animation:rise .4s ease both}
+@keyframes rise{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}
+.back{border:1px solid var(--line);background:rgba(18,34,58,.6);border-radius:999px;padding:7px 15px;font-size:12.5px;color:var(--ink2);margin:20px 0 16px;backdrop-filter:blur(7px)}
+.back:hover{border-color:rgba(77,208,255,.5);color:#fff}
+.live{display:flex;flex-direction:column;gap:2px;margin:12px 0 4px;padding:13px 16px;border:1px solid rgba(77,208,255,.45);border-radius:14px;background:rgba(18,34,58,.55);color:#fff;text-decoration:none;backdrop-filter:blur(7px)}
+.live b{font-size:15px}
+.live small{font-size:12.5px;color:var(--ink2)}
+.live:hover{border-color:rgba(77,208,255,.85)}
+.ptitle{font-size:clamp(20px,4.6vw,27px);font-weight:800;letter-spacing:-.035em;word-break:keep-all}
+.psub{color:var(--ink2);font-size:13.5px;margin-top:7px;word-break:keep-all}
+/* 운영판: 출구마다 실제 도구로 가는 버튼(LINKS에 주소가 있을 때만) */
+.golink{margin-top:14px;display:flex;flex-direction:column;gap:9px}
+.golink:empty{display:none}
+.golink a.gobtn{display:inline-flex;align-items:center;gap:8px;align-self:flex-start;text-decoration:none;color:#fff;font-weight:800;font-size:14.5px;
+  padding:11px 20px;border-radius:999px;background:linear-gradient(135deg,var(--pnu-lit),var(--pnu));box-shadow:0 8px 24px rgba(0,91,170,.45);transition:.15s}
+.golink a.gobtn:hover{transform:translateY(-1px);box-shadow:0 10px 28px rgba(77,208,255,.4)}
+.golink .caution{font-size:12.5px;color:var(--warn);background:rgba(255,194,75,.10);border:1px solid rgba(255,194,75,.35);border-radius:10px;padding:8px 12px;word-break:keep-all}
+.golink .notready{font-size:12.5px;color:var(--muted);border:1px dashed var(--line2);border-radius:10px;padding:8px 12px;word-break:keep-all}
+
+/* 유리 카드 공통 */
+.card{border-radius:var(--r);padding:1px;background:linear-gradient(160deg,rgba(120,190,255,.26),rgba(120,190,255,.05));margin-top:14px}
+.card > .in{background:linear-gradient(170deg,rgba(15,29,50,.94),rgba(10,20,36,.94));border-radius:calc(var(--r) - 1px);backdrop-filter:blur(10px)}
+
+/* 규정 답 */
+.ans{margin-top:18px;display:flex;flex-direction:column;gap:13px}
+.rule .h{padding:13px 17px;font-weight:800;font-size:15.5px;color:#fff;border-bottom:1px solid var(--line);
+  background:linear-gradient(90deg,rgba(0,91,170,.42),transparent);border-radius:calc(var(--r) - 1px) calc(var(--r) - 1px) 0 0;
+  display:flex;align-items:center;gap:9px}
+.rule .h i{width:7px;height:7px;border-radius:50%;background:var(--glow);box-shadow:0 0 9px var(--glow);flex:none}
+.rule .b{padding:15px 17px}
+.rule dl{display:grid;grid-template-columns:104px 1fr;gap:9px 14px;font-size:14px}
+@media (max-width:540px){.rule dl{grid-template-columns:1fr;gap:1px 0}.rule dt{margin-top:10px}}
+.rule dt{color:var(--glow-2);font-weight:800;font-size:12.5px;letter-spacing:.01em;padding-top:1px}
+.rule dd{color:var(--ink2);word-break:keep-all}
+.rule .basis{margin-top:14px;padding-top:12px;border-top:1px solid var(--line);font-size:12px;color:var(--muted)}
+.rule .basis b{color:var(--ink2)}
+.rule .note{margin-top:10px;background:rgba(255,194,75,.09);border:1px solid rgba(255,194,75,.24);color:#FFD98A;border-radius:10px;padding:9px 12px;font-size:12.5px}
+.none{padding:22px 18px;text-align:center}
+.none b{display:block;font-size:15px;margin-bottom:6px}
+.none p{color:var(--muted);font-size:13.5px;word-break:keep-all}
+.stop{padding:17px;font-size:14px;color:#FFB4A8;background:rgba(255,122,107,.08);border-radius:calc(var(--r) - 1px)}
+
+/* 메일 */
+.mail .mh{padding:15px 17px;border-bottom:1px solid var(--line);background:linear-gradient(90deg,rgba(0,91,170,.3),transparent)}
+.mail .mh .subj{font-weight:800;font-size:15.5px;color:#fff}
+.mail .mh .meta{color:var(--muted);font-size:12px;margin-top:4px}
+.mail .mb{padding:4px 17px 16px}
+.nt{border-bottom:1px solid var(--line);padding:16px 0}
+.nt:last-child{border-bottom:0}
+.nt .top{display:flex;gap:10px;align-items:flex-start;justify-content:space-between}
+.nt .t{font-weight:800;font-size:14.5px;word-break:keep-all;letter-spacing:-.02em}
+.nt .d{font-size:11px;font-weight:800;color:#04121F;background:linear-gradient(140deg,var(--glow),var(--pnu-lit));border-radius:999px;padding:3px 10px;white-space:nowrap}
+.nt .d.soon{background:linear-gradient(140deg,#FF9A8B,var(--bad));color:#2A0A05}
+.nt .org{color:var(--muted);font-size:12px;margin-top:4px}
+.nt .ai{margin-top:10px;background:rgba(0,91,170,.16);border:1px solid rgba(77,208,255,.16);border-radius:12px;padding:11px 13px;font-size:13.5px;color:var(--ink2);word-break:keep-all}
+.nt .ai b{color:var(--glow-2);font-size:11.5px;letter-spacing:.06em}
+.nt .fit{margin-top:9px;font-size:12.5px;color:var(--ok);font-weight:800}
+.nt .fit.no{color:var(--muted);font-weight:400}
+.hint{margin-top:16px;border-radius:var(--r);padding:1px;background:linear-gradient(140deg,rgba(201,162,39,.6),rgba(77,208,255,.2))}
+.hint .in{background:linear-gradient(170deg,rgba(24,30,44,.95),rgba(12,20,34,.95));border-radius:calc(var(--r) - 1px);padding:16px 17px}
+.hint b{display:block;color:var(--gold);font-size:14.5px;margin-bottom:6px}
+.hint p{font-size:13.5px;color:var(--ink2);word-break:keep-all}
+
+/* 취합 시연 */
+.stage .sh{display:flex;align-items:center;gap:10px;padding:13px 16px;border-bottom:1px solid var(--line);flex-wrap:wrap}
+.stage .sh b{font-size:14px;color:var(--glow-2)}
+.stage .ctl{margin-left:auto;display:flex;gap:7px}
+.stage .ctl button{border:1px solid var(--line2);border-radius:999px;padding:5px 14px;font-size:12.5px;color:var(--ink2);background:rgba(18,34,58,.6)}
+.stage .ctl button:hover{border-color:rgba(77,208,255,.55);color:#fff}
+.stage .body{padding:16px}
+.bar{display:flex;gap:6px;margin-bottom:15px}
+.bar i{flex:1;height:3px;border-radius:2px;background:rgba(120,170,220,.16);transition:.4s}
+.bar i.on{background:linear-gradient(90deg,var(--glow),var(--pnu-lit));box-shadow:0 0 10px rgba(77,208,255,.5)}
+.shot{border:1px solid var(--line);border-radius:13px;background:rgba(8,16,30,.6);padding:15px;min-height:196px}
+.shot .cap{font-size:11px;color:var(--muted);margin-bottom:11px;letter-spacing:.06em}
+.shot .row{display:flex;gap:10px;align-items:center;padding:9px 12px;background:rgba(18,34,58,.58);border:1px solid var(--line);border-radius:10px;margin-bottom:8px;font-size:13.5px}
+.shot .row .who{font-weight:800;color:var(--glow-2);min-width:74px;font-size:13px}
+.shot .row .txt{color:var(--ink2);flex:1;word-break:keep-all}
+.shot .row .st{font-size:11px;font-weight:800;border-radius:999px;padding:2px 9px;white-space:nowrap}
+.shot .row .st.wait{background:rgba(255,194,75,.14);color:var(--warn)}
+.shot .row .st.done{background:rgba(61,220,151,.14);color:var(--ok)}
+.shot .doc{background:rgba(232,240,250,.95);color:#12203A;border-radius:10px;padding:16px;font-size:13px;line-height:1.8}
+.shot .doc h4{font-size:14.5px;text-align:center;margin-bottom:11px;color:#0B2A50}
+.shot .doc .l{display:grid;grid-template-columns:82px 1fr;gap:5px 10px}
+.shot .doc .l span:first-child{color:#5A6C87;font-weight:800}
+.say{margin-top:14px;background:rgba(0,91,170,.16);border:1px solid rgba(77,208,255,.18);border-radius:12px;padding:12px 14px;font-size:13.5px;color:var(--ink);word-break:keep-all}
+
+/* 만드는 법 */
+.how{margin-top:24px}
+.how .in{padding:18px}
+.how .hd{display:flex;align-items:center;gap:9px;margin-bottom:5px}
+.how .hd svg{width:17px;height:17px;color:var(--glow-2)}
+.how b{font-size:15px}
+.how .lead{font-size:12.5px;color:var(--muted);margin-bottom:12px;word-break:keep-all}
+.how .p{background:rgba(8,16,30,.7);border:1px solid var(--line);border-left:3px solid var(--glow);border-radius:12px;
+  padding:15px 16px;font-size:14px;line-height:1.85;color:var(--ink2);word-break:keep-all}
+.how .act{display:flex;gap:9px;margin-top:12px;flex-wrap:wrap}
+.how .act button{border:1px solid var(--line2);border-radius:999px;padding:8px 16px;font-size:13px;color:var(--ink);background:rgba(0,91,170,.28)}
+.how .act button:hover{border-color:rgba(77,208,255,.6);background:rgba(0,91,170,.45)}
+
+footer{margin-top:34px;padding-top:20px;border-top:1px solid var(--line);font-size:12.5px;color:var(--muted);line-height:1.9;word-break:keep-all}
+footer b{color:var(--ink2)}
+.toast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%) translateY(18px);opacity:0;transition:.25s;z-index:9;
+  background:rgba(8,16,30,.95);border:1px solid var(--line2);color:#fff;padding:10px 18px;border-radius:999px;font-size:13px;pointer-events:none;backdrop-filter:blur(8px)}
+
+/* ── 회의비 서류(7주차 · 10/3): 규정 답에서 서류까지 창구 안에서 ── */
+.todocs{margin-top:13px}
+.live.btnlike{width:100%;text-align:left;cursor:pointer}
+.docs-scope{margin-top:12px;font-size:12.5px;color:var(--ink2);background:rgba(0,91,170,.16);border:1px solid rgba(77,208,255,.2);border-radius:12px;padding:10px 13px;word-break:keep-all;line-height:1.7}
+.docs-scope b{color:#fff}
+.docs-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;align-items:start}
+@media (max-width:760px){.docs-grid{grid-template-columns:1fr}}
+.docs .in{padding:16px 17px}
+.docs h3,details.after summary{font-size:14.5px;font-weight:800;color:#fff;display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.docs h3 .n,details.after summary .n{width:22px;height:22px;border-radius:7px;background:linear-gradient(140deg,var(--glow),var(--pnu));color:#04121F;font-size:12px;display:grid;place-items:center;flex:none}
+.docs h3 small,details.after summary small{margin-left:auto;font-weight:400;font-size:11.5px;color:var(--muted)}
+.f{display:flex;flex-direction:column;gap:5px;margin-top:11px;min-width:0}
+.f label{font-size:12.5px;font-weight:800;color:var(--glow-2)}
+.f label span{color:var(--muted);font-weight:400;font-size:11.5px;margin-left:5px}
+.f input,.f select,.f textarea{width:100%;min-width:0;font:inherit;font-size:14px;color:var(--ink);background:rgba(8,16,30,.72);border:1px solid var(--line2);border-radius:10px;padding:9px 11px;outline:0;color-scheme:dark}
+.f input:focus,.f select:focus,.f textarea:focus{border-color:rgba(77,208,255,.7);box-shadow:0 0 0 3px rgba(77,208,255,.14)}
+.f textarea{min-height:96px;resize:vertical;line-height:1.55}
+.f input::placeholder,.f textarea::placeholder{color:#5E7290}
+.f select option{background:#0E1C31;color:var(--ink)}
+.r2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.r3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px}
+@media (max-width:540px){.r3{grid-template-columns:1fr 1fr}}
+.chk{display:flex;gap:8px;align-items:flex-start;font-size:13px;color:var(--ink2);margin-top:10px;word-break:keep-all;cursor:pointer}
+.chk input{width:16px;height:16px;margin-top:3px;flex:none;accent-color:var(--glow)}
+.budget{margin-top:12px;border:1px solid var(--line);background:rgba(8,16,30,.55);border-radius:12px;padding:10px 13px;font-size:13px;color:var(--ink2);display:flex;justify-content:space-between;align-items:center;gap:10px}
+.budget b{font-size:18px;color:#fff;font-variant-numeric:tabular-nums}
+.btns{display:flex;gap:8px;flex-wrap:wrap;margin-top:14px}
+.btn{display:inline-flex;align-items:center;gap:6px;border-radius:999px;padding:9px 17px;font-weight:800;font-size:13.5px;transition:.15s}
+.btn.p{background:linear-gradient(135deg,var(--pnu-lit),var(--pnu));color:#fff;box-shadow:0 8px 22px rgba(0,91,170,.45)}
+.btn.p:hover{transform:translateY(-1px);box-shadow:0 10px 26px rgba(77,208,255,.4)}
+.btn.g{border:1px solid var(--line2);background:rgba(18,34,58,.6);color:var(--ink)}
+.btn.g:hover{border-color:rgba(77,208,255,.6)}
+.btn.s{padding:5px 12px;font-size:12px}
+.verdict{padding:11px 13px;border-radius:12px;font-weight:800;font-size:14px;margin:12px 0 10px;word-break:keep-all}
+.verdict small{font-weight:400;font-size:12px;opacity:.88}
+.verdict.ok{background:rgba(61,220,151,.12);border:1px solid rgba(61,220,151,.35);color:#9FF0C8}
+.verdict.warn{background:rgba(255,194,75,.10);border:1px solid rgba(255,194,75,.35);color:#FFD98A}
+.verdict.bad{background:rgba(255,122,107,.10);border:1px solid rgba(255,122,107,.4);color:#FFB4A8}
+.checks{display:flex;flex-direction:column;gap:6px}
+.ck{display:grid;grid-template-columns:22px 1fr;gap:9px;padding:9px 11px;border-radius:11px;font-size:13px;align-items:start;border:1px solid var(--line);background:rgba(8,16,30,.5);word-break:keep-all}
+.ck i{width:22px;height:22px;border-radius:50%;display:grid;place-items:center;font-style:normal;font-size:12px;font-weight:800;color:#04121F}
+.ck.ok i{background:var(--ok)}.ck.warn i{background:var(--warn)}.ck.bad i{background:var(--bad)}.ck.info i{background:var(--glow-2)}
+.ck.bad{border-color:rgba(255,122,107,.35)}.ck.warn{border-color:rgba(255,194,75,.3)}
+.ck b{font-weight:800;color:var(--ink)}.ck small{display:block;color:var(--muted);font-size:12px;margin-top:1px}
+.out{margin-top:14px}
+.out h4{font-size:13px;font-weight:800;color:var(--glow-2);display:flex;justify-content:space-between;align-items:center;gap:8px;margin-bottom:6px}
+.out pre{white-space:pre-wrap;word-break:keep-all;overflow-wrap:anywhere;background:rgba(232,240,250,.95);color:#12203A;border-radius:11px;padding:12px 14px;font:13px/1.7 'PN','Pretendard','Malgun Gothic',sans-serif}
+table.kv{width:100%;border-collapse:collapse;font-size:12.5px;background:rgba(232,240,250,.95);color:#12203A;border-radius:11px;overflow:hidden}
+table.kv td{padding:7px 10px;border-bottom:1px solid #fff;vertical-align:top;white-space:pre-wrap;word-break:keep-all;overflow-wrap:anywhere}
+table.kv td:first-child{width:78px;color:#5A6C87;font-weight:800;white-space:nowrap}
+.evid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+@media (max-width:540px){.evid{grid-template-columns:1fr}}
+.ev{border:1px solid var(--line);border-radius:11px;padding:10px 12px;font-size:12.5px;background:rgba(8,16,30,.5);word-break:keep-all}
+.ev b{display:block;font-size:13px;color:var(--ink)}.ev small{display:block;color:var(--muted);font-size:12px}
+.ev .who{display:inline-block;margin-top:5px;font-size:11px;font-weight:800;border-radius:999px;padding:1px 9px;background:rgba(77,208,255,.12);color:var(--glow-2)}
+.empty{color:var(--muted);font-size:13px;padding:22px 4px;text-align:center;word-break:keep-all}
+details.after{margin-top:14px;border-radius:var(--r);border:1px dashed var(--line2);background:rgba(13,26,46,.55);backdrop-filter:blur(8px)}
+details.after summary{cursor:pointer;padding:14px 17px;list-style:none}
+details.after summary::-webkit-details-marker{display:none}
+details.after .in{padding:0 17px 17px}
+.dbasis{margin-top:16px;font-size:12px;color:var(--muted);word-break:keep-all;line-height:1.75}
+.dbasis b{color:var(--ink2)}
+
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+
+<canvas id="sky"></canvas>
+<div class="aurora"><i></i><i></i><i></i></div>
+<div class="grid-lines"></div>
+
+<div class="band"><b>2026. 10. 30. 성과공유회 시연용</b> · 이 페이지는 2026. 11. 16.에 닫습니다 · 여기 실린 지침은 모두 공개된 자료입니다</div>
+
+<div class="wrap">
+<header>
+  <div class="brand">
+    <span class="mk"><img src="__PNU__" alt="부산대학교 상징"></span>
+    <div>
+      <h1>연구진흥과 창구<span class="tag">시연본</span></h1>
+      <small>부산대학교 연구처</small>
+    </div>
+  </div>
+  <div class="org">누구나 열어 보실 수 있습니다<br><span id="stat">로그인 없이 바로</span></div>
+</header>
+
+<!-- ───────── 홈 ───────── -->
+<section id="home">
+  <div class="hero">
+    <div class="orbit">
+      <div class="ring"></div><div class="ring r2"></div><div class="ring r3"></div>
+      <div class="halo"></div>
+      <div class="spin" id="mates"></div>
+      <div class="sanjini" id="sanjini" role="img" aria-label="부산대 마스코트 산지니"><div class="sj-in">
+        <img class="sj-wing" src="__SJ_WING__" alt="">
+        <img class="sj-body" src="__SANJINI__" alt="">
+        <img class="sj-blink" src="__SJ_BLINK__" alt="">
+      </div><span class="sj-dots" aria-hidden="true"><i></i><i></i><i></i></span><span class="sj-spark" aria-hidden="true"><i></i><i></i><i></i><i></i></span></div>
+    </div>
+    <span class="kicker"><i></i>산지니와 세 동료가 함께합니다</span>
+    <h2 class="big">무엇을 <em>도와드릴까요?</em></h2>
+    <p class="sub">하시려는 일을 그대로 적어 주세요. 알맞은 곳으로 안내해 드립니다.</p>
+  </div>
+
+  <div class="askbox"><div class="inner">
+    <textarea id="ask" rows="1" placeholder="예) 회의비 1인 한도가 얼마예요?"></textarea>
+    <div class="row">
+      <small>적으신 말은 이 화면을 벗어나지 않습니다</small>
+      <button class="go" onclick="askGo()" aria-label="찾기">&#8593;</button>
+    </div>
+  </div></div>
+  <div class="chips" id="chips"></div>
+
+  <div class="ans" id="ans"></div>
+
+  <div class="exits">
+    <button class="exit" onclick="open3('rule')"><div class="in">
+      <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20V4H6.5A2.5 2.5 0 0 0 4 6.5z"/></svg></div>
+      <span class="n">출구 1</span><b>규정이 궁금해요</b><small>한도·기준·증빙<br>공개 지침에서 찾아 드립니다</small></div></button>
+    <button class="exit" onclick="open3('notice')"><div class="in">
+      <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 8l9 6 9-6"/><rect x="3" y="5" width="18" height="14" rx="2"/></svg></div>
+      <span class="n">출구 2</span><b>연구공고 보기</b><small>매일 아침 열 시<br>이런 메일이 옵니다</small></div></button>
+    <button class="exit" onclick="open3('weekly')"><div class="in">
+      <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 5h6M4 12h6M4 19h6"/><path d="M13 12h7M16 9l4 3-4 3"/></svg></div>
+      <span class="n">출구 3</span><b>주간회의 자료</b><small>입력 한 번<br>회의자료 한 장으로</small></div></button>
+  </div>
+
+  <!--PUBLIC-->
+  <div class="pub">
+    <b>이렇게 쓰세요 — 실제로 작동합니다</b>
+    <ol>
+      <li><b>물어보기</b> · 위 칸에 「회의비 1인 한도가 얼마예요?」처럼 적으시면 공개 지침에서 금액·근거·필요한 서류를 바로 찾아 드립니다.</li>
+      <li><b>서류 만들기</b> · 회의비 답 아래 「이 회의, 서류까지 만들어 보기」를 누르시면 기안 공문 본문·원인행위 입력표·회의록 문구가 나옵니다. 복사해서 그대로 쓰시면 됩니다.</li>
+      <li><b>실제 도구 열기</b> · 출구 2(연구공고 대시보드)와 출구 3(주간회의 취합, 가명 데모)은 버튼을 누르시면 지금 돌아가는 실제 화면이 열립니다.</li>
+    </ol>
+    <div class="src">
+      <a class="live" href="changgu-source.zip" download><b>소스 코드 받기 (압축 파일) &#8595;</b><small>이 화면 그대로 · 우리 부서 규정으로 바꾸는 법 안내 포함</small></a>
+      <a class="live" href="https://github.com/AImaestroresearch/pnu-agents-demo/tree/main/changgu/source" target="_blank" rel="noopener"><b>파일을 하나씩 보기 &#8599;</b><small>코드 저장소(공개)에서 바로 보실 수 있습니다</small></a>
+    </div>
+    <small>로그인·설치 없이 이 페이지 하나로 동작합니다. 적으신 말은 어디에도 저장·전송되지 않습니다. 코드는 가져다 고쳐 쓰셔도 됩니다.</small>
+  </div>
+  <!--/PUBLIC-->
+  <!--DEMO-->
+  <div class="qr">
+    <b>같이 보시려면</b>
+    <div class="addr" id="addr"><span class="nw">aimaestroresearch.github.io/</span><wbr><span class="nw">pnu-agents-demo/changgu/</span></div>
+    <img id="qrimg" src="qr.png" alt="접속 QR" onerror="this.style.display='none'" onload="this.style.display='block'">
+    <small>여러 분이 동시에 열어도 괜찮습니다. 다만 발표장 와이파이가 느릴 수 있습니다.</small>
+  </div>
+  <!--/DEMO-->
+</section>
+
+<!-- ───────── 출구 1 ───────── -->
+<section id="p-rule" class="panel">
+  <button class="back" onclick="goHome()">&#8592; 창구로</button>
+  <div class="ptitle">규정에서 찾아 드립니다</div>
+  <div class="golink" id="go-rule"></div>
+  <p class="psub">공개된 지침·기준에서 물어보신 항목을 찾아 근거와 함께 보여 드립니다. 이 화면은 검색이고, 실제 운영 중인 규정봇은 자료 전체를 읽고 답합니다.</p>
+  <button class="live btnlike" onclick="openDocs()"><b>회의비 서류 만들기 &#8594;</b><small>계획 점검 · 기안 공문 본문 · 회의 뒤 회의록 문구까지, 이 화면 안에서</small></button>
+  <div class="askbox" style="margin-top:18px"><div class="inner">
+    <textarea id="ask2" rows="1" placeholder="예) 법인카드 · 국외 출장 숙박비 · 참석자확인서"></textarea>
+    <div class="row"><small>궁금한 낱말만 넣으셔도 됩니다</small><button class="go" onclick="askGo2()" aria-label="찾기">&#8593;</button></div>
+  </div></div>
+  <div class="chips" id="chips2"></div>
+  <div class="ans" id="ans2"></div>
+  <div class="card how" id="how-rule"></div>
+</section>
+
+<!-- ───────── 출구 2 ───────── -->
+<section id="p-notice" class="panel">
+  <button class="back" onclick="goHome()">&#8592; 창구로</button>
+  <div class="ptitle">매일 아침 열 시, 이런 메일이 옵니다</div>
+  <div class="golink" id="go-notice"></div>
+  <p class="psub">사람이 공고 사이트를 뒤지는 대신 봇이 찾아 읽고 요약해 보냅니다. 아래는 형식을 보여 드리는 <b>예시</b>입니다.</p>
+  <div class="card mail"><div class="in" id="mail"></div></div>
+  <div class="hint"><div class="in">
+    <b>여기까지가 지금이고, 다음은 이렇게 갈 수 있습니다</b>
+    <p>지금은 부서 담당자에게 한 통이 갑니다. 교수님 명단과 그분들의 논문 정보가 있으면, 공고마다 "이 분야 교수님께 맞겠다"까지 골라 보낼 수 있습니다. 데이터를 쓰려면 승인이 필요해서 아직 하지 않았습니다.</p>
+  </div></div>
+  <div class="card how" id="how-notice"></div>
+</section>
+
+<!-- ───────── 출구 3 ───────── -->
+<section id="p-weekly" class="panel">
+  <button class="back" onclick="goHome()">&#8592; 창구로</button>
+  <div class="ptitle">입력 한 번, 회의자료 한 장까지</div>
+  <div class="golink" id="go-weekly"></div>
+  <p class="psub">주간회의 자료를 모으는 과정입니다. 아래 화면은 <b>가명으로 만든 시연</b>이고 실제 부서 자료가 아닙니다.</p>
+  <div class="card stage"><div class="in">
+    <div class="sh">
+      <b id="wk-label">준비</b>
+      <div class="ctl">
+        <button onclick="playWeekly()">▶ 재생</button>
+        <button onclick="stopWeekly()">멈춤</button>
+        <button onclick="resetWeekly()">처음부터</button>
+      </div>
+    </div>
+    <div class="body">
+      <div class="bar" id="wk-bar"></div>
+      <div class="shot" id="wk-shot"></div>
+      <div class="say" id="wk-say"></div>
+    </div>
+  </div></div>
+  <!--DEMO-->
+  <a class="live" href="https://script.google.com/macros/s/AKfycbzsPLNc2g2vtWrNSxm4Y9CU5IrMj69iCRtjTqzudb-4jCvRLXWLt-bmbJywUx9WCG1h/exec" target="_blank" rel="noopener"><b>실제 데모 화면 열기 &#8599;</b><small>가명으로 만든 데모 · 로그인 없이 · 인터넷이 필요합니다</small></a>
+  <!--/DEMO-->
+  <div class="card how" id="how-weekly"></div>
+</section>
+
+<!-- ───────── 회의비 서류(7주차): 규정 답에서 서류까지 ───────── -->
+<section id="p-docs" class="panel">
+  <button class="back" onclick="goHome()">&#8592; 창구로</button>
+  <div class="ptitle">회의비 서류, 여기서 바로</div>
+  <p class="psub">회의 계획을 적으면 지침대로 미리 점검하고 기안 공문 본문과 원인행위 입력표를 만들어 드립니다. 회의가 끝나면 영수증 값으로 회의록·지출증빙 문구까지 채웁니다.</p>
+  <div class="docs-scope"><b>BK21 대학원혁신지원비 회의비</b>만 다룹니다(2026. 3. 개정 지침 §9). 다른 재원은 기준이 다릅니다.<br>
+    적으신 내용은 저장하지도 보내지도 않습니다. 화면을 닫으면 사라지니 「복사」로 가져가세요. <b>주민번호·계좌번호·카드번호는 넣지 마세요</b> — 참석자는 소속·직위·성명까지만.</div>
+  <div class="docs-grid">
+    <div class="card docs"><div class="in">
+      <h3><span class="n">1</span>회의 계획 <small>기안 전</small></h3>
+      <div class="f"><label for="d-title">회의 제목 <span>= 공문 제목 = 원인행위 건명</span></label><input id="d-title" placeholder="예) 우수 연구성과 홍보 업무협의 간담회 개최"></div>
+      <div class="f"><label for="d-agenda">회의 내용 한 줄 <span>안건·목적</span></label><input id="d-agenda" placeholder="예) 하반기 홍보 대상 논문 선정 및 일정 협의"></div>
+      <div class="r2">
+        <div class="f"><label for="d-date">개최 일자</label><input id="d-date" type="date"></div>
+        <div class="f"><label for="d-time">시작 시각</label><input id="d-time" type="time" value="12:00"></div>
+      </div>
+      <div class="f"><label for="d-place">장소 <span>식당이면 가맹점명</span></label><input id="d-place" placeholder="예) 학교 인근 식당 ○○ / 연구진흥과 회의실"></div>
+      <div class="f"><label for="d-people">참석자 <span>한 줄에 한 명 · 소속 직위 성명</span></label><textarea id="d-people" placeholder="연구진흥과 과장 ○○○&#10;연구진흥과 팀장 ○○○&#10;연구진흥과 담당자 ○○○&#10;○○대학 교수 ○○○ (외부)"></textarea></div>
+      <div class="r3">
+        <div class="f"><label for="d-count">인원 <span>자동</span></label><input id="d-count" type="number" min="1" placeholder="0"></div>
+        <div class="f"><label for="d-unit">1인 단가 <span>5만 원까지</span></label><input id="d-unit" type="number" min="0" step="1000" placeholder="30000"></div>
+        <div class="f"><label for="d-docno">공문번호 <span>선택</span></label><input id="d-docno" placeholder="연구진흥과-1234"></div>
+      </div>
+      <div class="f"><label for="d-line">예산과목 <span>사업-세부사업-비목-세목</span></label><input id="d-line" placeholder="예) BK21 대학원혁신지원사업-○○-업무추진비-사업추진업무추진비"></div>
+      <label class="chk"><input type="checkbox" id="d-ext">외부인(타 기관·업체) 참석자가 있습니다</label>
+      <label class="chk"><input type="checkbox" id="d-exc">주말·공휴일·심야에 해야 하는 사유 문서가 있습니다(행사계획·출장명령·휴일근무명령 등)</label>
+      <div class="budget"><span>소요예산 = 단가 × 인원</span><b id="d-budget">0원</b></div>
+      <div class="btns"><button class="btn p" onclick="runPlan()">서류 만들기</button><button class="btn g" onclick="fillSample()">예시 채우기</button><button class="btn g" onclick="resetDocs()">지우기</button></div>
+    </div></div>
+    <div class="card docs" id="d-result"><div class="in">
+      <h3><span class="n">2</span>점검 · 만들어진 서류 <small id="d-meta">왼쪽에 적고 버튼</small></h3>
+      <div id="d-out"><div class="empty">왼쪽에 회의 계획을 적고 「서류 만들기」를 누르세요.<br>처음이면 「예시 채우기」부터.</div></div>
+    </div></div>
+  </div>
+  <details class="after" id="d-after">
+    <summary><span class="n">3</span>회의 뒤 · 영수증으로 마무리 <small>영수증 금액·가맹점 + 회의 내용 두세 줄 → 사후 점검 · 원인행위 · 회의록</small></summary>
+    <div class="in"><div class="docs-grid">
+      <div>
+        <div class="r2">
+          <div class="f"><label for="a-paid">영수증 총액(원)</label><input id="a-paid" type="number" min="0" step="100" placeholder="0"></div>
+          <div class="f"><label for="a-count">실제 참석 인원</label><input id="a-count" type="number" min="1" placeholder="0"></div>
+        </div>
+        <div class="r2">
+          <div class="f"><label for="a-date">결제 일자</label><input id="a-date" type="date"></div>
+          <div class="f"><label for="a-time">결제 시각</label><input id="a-time" type="time"></div>
+        </div>
+        <div class="f"><label for="a-vendor">가맹점명 <span>영수증 상호 그대로</span></label><input id="a-vendor" placeholder="예) ○○식당"></div>
+        <div class="f"><label for="a-vno">사업자등록번호 <span>선택</span></label><input id="a-vno" placeholder="000-00-00000"></div>
+        <div class="f"><label for="a-min">회의 내용 <span>회의록 본문 · 두세 줄</span></label><textarea id="a-min" placeholder="○ 하반기 홍보 대상 논문 선정 기준 논의&#10;○ 배포 채널·일정 협의"></textarea></div>
+        <div class="btns"><button class="btn p" onclick="runAfter()">영수증 넣고 마무리</button></div>
+      </div>
+      <div id="a-out"><div class="empty">회의가 끝나면 영수증 값을 넣으세요.</div></div>
+    </div></div>
+  </details>
+  <div class="dbasis"><b>근거</b> · 부산대학교 4단계 BK21 대학원혁신지원사업 사업비 편성 및 집행지침(2026. 3. 개정) §9 회의비 — 1인 5만 원 이내(다과·식대 포함), 내부결재 공문·회의록, 참석자 확인서는 결제 금액과 관계없이, 주말·공휴일·근무지와 무관한 지역·22시 이후 심야는 원칙적으로 클린카드를 쓰지 않음, 회의 뒤 후식 금지 · Ⅳ-6 클린카드 제한업종(기획재정부 집행지침) · 2026년 공휴일표(대체공휴일 포함)는 화면 안에 있습니다.<br>
+    점검은 규칙표에 따른 안내이고, 판단·승인은 담당자와 결재선이 합니다. 휴가·출장 여부와 같은 시간대 다른 회의는 봇이 모르니 담당자가 확인합니다.</div>
+</section>
+
+<footer>
+  <b>이 화면에 대하여</b><br>
+  세 가지 도구를 부서에서 실제로 쓰고 있고, 이 페이지는 그 모습을 보여 드리는 시연본입니다. 실제 운영본은 학교 계정 안에서 따로 돌아갑니다.<br>
+  봇이 도는 데는 학교 구글 계정의 무료 도구만 씁니다. <b>코드는 직접 쓰지 않았습니다.</b> AI에게 무엇이 필요한지 말로 설명해 만들었습니다.<br>
+  적으신 말은 저장하지도 보내지도 않습니다. 이 파일 하나로 동작합니다. 산지니는 부산대학교 공식 마스코트입니다.
+</footer>
+</div>
+<div class="toast" id="toast"></div>
+
+<script>
+/* ═══════════════════════════════════════════════════════════════
+   연구진흥과 창구 · 10/30 성과공유회 시연본
+   원칙: 로그인 없음 · 서버 없음 · 외부 요청 없음 · 저장 없음.
+        폰트와 마스코트까지 파일 안에 심어 두어 웹에서도, 오프라인에서도 같은 모습.
+   ⚠️ 발표 전 담당자 확인 필요: RULES_DB의 금액·시행일이 현행인지.
+   ═══════════════════════════════════════════════════════════════ */
+
+const EXITS = ['rule', 'notice', 'weekly'];
+
+/* 빌드가 채운다: 'demo'(시연본) · 'deploy'(운영판, GAS 웹앱) · 'public'(공개판, 11/2~) */
+const MODE = '__MODE__';
+/* 실제 도구 주소 — 운영판은 운영판/links.json 에서, 시연본은 비워 둔다(비면 버튼이 안 생김) */
+const LINKS = __LINKS__;
+const LINK_CAUTION = { rule: '규정봇에는 회의록·영수증 같은 파일을 올리지 마세요. 질문만 적으시면 됩니다.' };
+/* 공개판: 주소가 없는 출구에 띄울 말(규정봇은 부서원만 열림) */
+const PUBLIC_NOTE = { rule: '규정봇(규정 원문을 넣어 두고 그 자료로만 답하게 한 AI 노트북)은 부서원만 열립니다. 같은 것을 직접 만드는 법은 첫 화면 「소스 코드 받기」 묶음의 안내에 있습니다.' };
+function linkOf(k){ const d = (LINKS && LINKS[k]) || { name: '', url: '' }; const url = String(d.url || '').trim(); return { name: d.name || k, url, ready: /^https:\/\//.test(url) }; }
+function renderLinks(){
+  EXITS.forEach(k => {
+    const box = $('#go-' + k);
+    if(!box || box.innerHTML === undefined) return;
+    const d = linkOf(k);
+    if(d.ready){
+      box.innerHTML = '<a class="gobtn" href="' + esc(d.url) + '" target="_blank" rel="noopener noreferrer">' + esc(d.name) + ' 열기 &#8599;</a>'
+        + (LINK_CAUTION[k] ? '<div class="caution">' + esc(LINK_CAUTION[k]) + '</div>' : '');
+    } else if(MODE === 'public' && PUBLIC_NOTE[k]){
+      box.innerHTML = '<div class="notready">' + esc(PUBLIC_NOTE[k]) + '</div>';
+    } else if(MODE === 'deploy'){
+      box.innerHTML = '<div class="notready">※ ' + esc(d.name) + ' 주소가 아직 설정되지 않았습니다. 담당자가 links.json에 넣고 다시 올리면 버튼이 생깁니다.</div>';
+    } else {
+      box.innerHTML = '';
+    }
+  });
+}
+/*__GAS__*/
+
+/* ───────── 출구 1 · 공개 지침 (담당자가 현행본으로 갱신) ───────── */
+const RULES_DB = [
+  {
+    title: '회의비 · 간담회비',
+    keys: ['회의비','간담회','다과','식대','회의','밥','점심','저녁'],
+    lines: [
+      ['1인 한도', '50,000원 이내 (다과·식대 포함) — BK21 대학원혁신지원비, 2026. 3. 개정 지침 기준'],
+      ['다른 재원은', '국립대학 육성사업은 1인 50,000원 이내(2025. 11. 27. 개정 집행 지침 ⑧ — 내부결재 공문·회의록, 건당 50만 원 이상은 참석자확인서), 산학협력단이 관리하는 연구개발과제는 1인 50,000원 범위 내(연구비 관리 세부 지침 2026. 9. 1. 개정 [별표 2] — 기준단가 2024. 10. 21.부터, 그 과제 참여연구자만 모인 회의의 식비는 안 됨), BK21 교육연구단 사업비는 산학협력단 기준을 따릅니다(세부 지침 적용 범위 — 업무편람 최신판은 산단 BK사업팀 확인). 재원마다 다르니 먼저 확인하세요'],
+      ['결제 수단', '법인 클린카드'],
+      ['제외되는 때', '22시 이후 심야, 주말·공휴일, 근무지와 무관한 지역 — 원칙적으로 쓰지 않습니다(불가피하면 사유 문서를 함께). 주류를 주로 파는 곳은 클린카드 제한업종입니다'],
+      ['필요한 서류', '기안 공문 · 카드매출전표 · 회의록 · 참석자확인서(금액과 관계없이)'],
+      ['이런 건 안 됩니다', '회의 뒤 후식(커피·아이스크림 등)에 다시 쓰기'],
+      ['담당자가 확인', '휴가·출장 중인 사람이 명단에 없는지, 같은 시간대 다른 회의와 겹치지 않는지'],
+    ],
+    basis: '부산대학교 4단계 BK21 대학원혁신지원사업 사업비 편성 및 집행지침 §9 (2026. 3. 개정) · 클린카드 제한업종(같은 지침 Ⅳ-6)',
+    note: 'BK21 대학원혁신지원비(대학회계) 기준입니다. 교육연구단 사업비·교비는 담당 부서 기준을 따릅니다(육성사업·연구개발과제 한도는 「다른 재원은」 줄 — 2026. 10. 6. 지침 원문 대조).',
+  },
+  {
+    title: '음식물 접대비',
+    keys: ['접대','접대비','음식물','손님','외부인 식사'],
+    lines: [
+      ['1인 한도', '50,000원'],
+      ['기준', '2024. 7. 27. 개정분'],
+      ['회의비와 구분', '회의비와는 근거가 다릅니다(회의비 한도는 재원마다 다름). 어떤 성격인지 먼저 정하고 과목을 고릅니다'],
+    ],
+    basis: '연구비·회계 관련 지침 (2024. 7. 27. 개정)',
+    note: '금액 기준은 개정이 잦습니다. 집행 전 담당자에게 현행 여부를 확인하세요.',
+  },
+  {
+    title: '국외 출장 숙박비',
+    keys: ['국외','해외','출장','숙박','호텔','여비'],
+    lines: [
+      ['정산 방식', '실비 정산'],
+      ['상한', '급지별 상한액(USD)'],
+      ['상한을 넘을 때', '초과분이 50%를 넘으면 별도 승인'],
+      ['함께 챙길 것', '출장 명령, 귀국 후 결과 보고'],
+    ],
+    basis: '공무국외출장·연구년 등에 관한 규정 · 국외여비 기준',
+    note: '급지와 상한액은 연도별로 바뀝니다. 출국 전 확인하세요.',
+  },
+  {
+    title: '법인카드 · 클린카드',
+    keys: ['법인카드','클린카드','카드','결제','제한업종'],
+    lines: [
+      ['원칙', '대학의 장이 발행한 법인 클린카드로만 결제'],
+      ['막혀 있는 업종', '주류를 주로 파는 곳 등 제한 업종'],
+      ['시간·요일', '심야·휴일 결제는 사유 문서가 필요합니다'],
+      ['영수증', '카드매출전표(내역 포함)를 증빙에 붙입니다'],
+    ],
+    basis: 'BK21 대학원혁신 지침 Ⅳ-6 · §9 (2026. 3. 개정)',
+  },
+  {
+    title: '회의록 · 참석자확인서 (서식)',
+    keys: ['회의록','참석자','확인서','서식','증빙','서류'],
+    lines: [
+      ['서식 1', '지출증빙영수증 — 사업명·일자·내역·금액, 카드매출전표 부착'],
+      ['서식 6', '회의록 — 제목·일시·장소·작성자·관리자·참석자·회의 내용'],
+      ['서식 7', '참석자확인서 — 소속·직위·성명·서명'],
+      ['참석자확인서', '금액과 관계없이 붙입니다(2026. 3. 개정 지침)'],
+    ],
+    basis: 'BK21 대학원혁신 지침 서식 1·6·7 (2026. 3. 개정)',
+  },
+  {
+    title: '지출원인행위 (건명 · 적요)',
+    keys: ['원인행위','건명','적요','코러스','지출결의','예산과목'],
+    lines: [
+      ['건명', '기안 공문 제목을 그대로 씁니다 — 예) [사업명] 업무협의 간담회 개최(2026.9.29)'],
+      ['적요', '공문 본문을 그대로 옮깁니다 — 관련 공문번호 / 개최일시 / 개최장소 / 회의내용 / 참석인원 / 소요예산 / 예산과목'],
+      ['고정값', '지급구분 일시불 · 법인카드 결제'],
+      ['나눠지는 일', '담당자는 원인행위까지, 지출결의는 서무가 합니다'],
+    ],
+    basis: '연구진흥과 실무 표준 (2023년 이후 형식)',
+  },
+  {
+    title: '국외에서 받은 연구비 · 장비 신고',
+    keys: ['국외수혜','해외 연구비','겸직','자문','장비 지원','수혜','신고'],
+    lines: [
+      ['신고 대상', '금액과 관계없이 국외수혜에 해당하면 모두'],
+      ['기한', '발생일부터 30일 이내'],
+      ['어디에', '연구개발정보시스템(IRIS)에 현행화'],
+      ['연구비 말고도', '인력·장비·시설 지원, 강의·자문·겸직 대가도 대상입니다'],
+    ],
+    basis: '국가연구개발혁신법 시행령 §9③8 (2026. 8. 20. 시행분)',
+  },
+  {
+    title: '연구자료 · 장비 국외 반출',
+    keys: ['반출','수출','전략물자','시료','자가판정','국가핵심기술'],
+    lines: [
+      ['순서', '전략물자 자가판정 → 국가보호기술 해당 여부 확인 → 필요하면 허가'],
+      ['자가판정', '무역안보관리원(Yestrade)에서 연구자가 직접 합니다'],
+      ['어려우면', '전문판정을 센터가 대행합니다 (대학 무료)'],
+      ['놓치기 쉬운 것', '기술자료를 이메일·클라우드로 보내는 것도 반출입니다'],
+    ],
+    basis: '대외무역법 · 전략물자 수출입고시 · 산업기술보호법 §11의2',
+  },
+];
+
+/* ───────── 출구 2 · 공고 예시 ───────── */
+const NOTICES = [
+  {
+    title: '2027년도 개인기초연구사업 신규과제 공모',
+    org: '한국연구재단 · 기초연구본부',
+    due: 'D-12', soon: false,
+    summary: '전 분야 개인연구를 지원하는 사업입니다. 대학 전임교원이 신청할 수 있고, 연구비는 연 5천만 원에서 2억 원 수준입니다. 주의할 점: 유형(우수신진·중견)마다 신청 자격이 다릅니다.',
+    fit: '이공계 전임교원 · 신진연구자',
+  },
+  {
+    title: '지역혁신 선도연구센터(RLRC) 신규 선정 공고',
+    org: '과학기술정보통신부 · 한국연구재단',
+    due: 'D-5', soon: true,
+    summary: '지역 대학의 연구그룹을 묶어 7년간 지원하는 집단연구 사업입니다. 대학이 신청할 수 있고, 지자체 대응자금이 필요합니다. 주의할 점: 참여 연구자 구성 요건이 있어 사전 기획이 오래 걸립니다.',
+    fit: '집단연구 · 지자체 협력 과제',
+  },
+  {
+    title: '대학혁신지원사업 성과확산 프로그램 참여기관 모집',
+    org: '교육부 · 한국연구재단',
+    due: 'D-21', soon: false,
+    summary: '연구 성과를 알리고 확산하는 활동을 지원합니다. 연구 과제가 아니라 성과 활용 사업이라 신청 주체가 학과·센터 단위입니다. 자격 요건은 공고문에 명시되어 있지 않아 담당 부서 확인이 필요합니다.',
+    fit: null,
+  },
+];
+
+/* ───────── 출구 3 · 취합봇 자동 시연 ───────── */
+const WEEKLY_STEPS = [
+  { label: '1. 각자 입력', say: '부서원이 웹 화면에 바로 적습니다. 파일을 메일로 주고받지 않습니다.',
+    shot: `<div class="cap">주간 업무 입력 화면 (가명)</div>
+      <div class="row"><span class="who">김○○</span><span class="txt">지난주: 공고 검토 12건 / 이번주: 협약 2건 체결</span><span class="st done">제출</span></div>
+      <div class="row"><span class="who">이○○</span><span class="txt">지난주: 정산 서류 정리 / 이번주: 중간점검 준비</span><span class="st done">제출</span></div>
+      <div class="row"><span class="who">박○○</span><span class="txt">입력 중…</span><span class="st wait">미제출</span></div>` },
+  { label: '2. 시트에 모임', say: '입력한 내용이 구글 시트 한 곳에 쌓입니다. 수요일 두 시가 마감입니다.',
+    shot: `<div class="cap">취합 시트 (가명)</div>
+      <div class="row"><span class="who">김○○</span><span class="txt">협약 2건 체결 예정</span><span class="st done">14:00 전</span></div>
+      <div class="row"><span class="who">이○○</span><span class="txt">중간점검 자료 준비</span><span class="st done">14:00 전</span></div>
+      <div class="row"><span class="who">박○○</span><span class="txt">교육 참석 · 규정 개정 검토</span><span class="st done">14:00 전</span></div>` },
+  { label: '3. 사람이 확인', say: '여기서 멈춥니다. 담당자가 보고 확인해야 다음으로 넘어갑니다. 자동으로 보내지 않습니다.',
+    shot: `<div class="cap">확인 화면 (가명)</div>
+      <div class="row"><span class="who">담당자</span><span class="txt">세 명 제출 완료 · 문구 다듬은 뒤 넘김</span><span class="st done">확인함</span></div>
+      <div class="row"><span class="who">보내기</span><span class="txt">확인을 거쳐야 눌립니다</span><span class="st wait">대기</span></div>` },
+  { label: '4. 한 장으로 모아 보기', say: '확인이 끝난 것만 회의자료 순서대로 한 화면에 모입니다. 같은 내용을 다시 타이핑하지 않습니다. 한글 파일로 바로 만드는 것은 다음 단계입니다.',
+    shot: `<div class="cap">회의자료 (가명)</div>
+      <div class="doc"><h4>연구진흥과 주간업무 보고</h4>
+        <div class="l"><span>김○○</span><span>협약 2건 체결 예정</span>
+        <span>이○○</span><span>중간점검 자료 준비</span>
+        <span>박○○</span><span>교육 참석 · 규정 개정 검토</span></div></div>` },
+  { label: '5. 회의에서', say: '회의에서는 이 한 장만 보려는 것입니다. 모으는 데 쓰던 시간을 이야기하는 시간으로 바꿉니다. 지금은 시범 운영 중이라 메일 취합과 함께 씁니다.',
+    shot: `<div class="cap">줄이려는 것</div>
+      <div class="row"><span class="who">전</span><span class="txt">각자 파일 작성 → 메일로 보내기 → 담당자가 옮겨 붙이기</span><span class="st wait">여러 번</span></div>
+      <div class="row"><span class="who">후</span><span class="txt">각자 한 줄 입력 → 확인 → 문서 한 장</span><span class="st done">한 번</span></div>` },
+];
+
+/* ───────── 만드는 법 (코드 대신 질문) ───────── */
+const PROMPTS = {
+  rule: '우리 부서 규정과 지침 PDF를 모아 두고, 직원이 물어보면 그 자료 안에서만 답하게 하고 싶어. 답 끝에는 반드시 근거 조항과 시행일을 붙이고, 자료에 없는 내용은 지어내지 말고 "담당자에게 확인하세요"라고 답하게 해 줘. 개인정보가 들어간 파일은 올리지 않는다는 안내도 화면에 넣어 줘.',
+  notice: '연구공고 목록 사이트를 매일 아침 열 시에 확인해서, 새로 올라온 공고만 구글 시트에 쌓고 담당자에게 메일로 보내는 걸 구글 앱스 스크립트로 만들어 줘. 첨부된 공고문을 읽어 무엇을 지원하는지, 대학이 신청할 수 있는지, 규모와 마감을 짧게 붙이고, 공고문에 없는 내용은 "공고문에 명시 없음"이라고 써 줘. 새 공고가 없는 날에도 나에게만 확인 메일을 보내고, 목록 순서가 바뀌어도 놓치지 않게 전체 페이지를 훑어 줘.',
+  weekly: '부서원이 주간 업무를 웹 화면에 입력하면 부서 구글 시트에 모이고, 팀장이 승인한 것만 회의자료 순서대로 모아 볼 수 있게 만들어 줘. 쓰는 동안 옆에 회의자료 모양 미리보기를 보여 주고, 반려하면 수정 요청 메모가 작성자 화면에 보이게 해 줘. 자동으로 발송하지 말고 꼭 사람이 확인한 다음에 나가게 해 줘. 실명 명단은 서버 코드 안에만 두고, 부서 코드를 넣어야 보이게 해 줘.',
+};
+const PROMPT_LEAD = {
+  rule: '규정봇을 만들 때 AI에게 부탁한 내용을 한 문단으로 줄이면 이렇습니다.',
+  notice: '공고봇을 만들 때 AI에게 여러 번 나눠 부탁한 내용을 한 문단으로 줄이면 이렇습니다.',
+  weekly: '취합봇을 만들 때 AI에게 여러 번 나눠 부탁한 내용을 한 문단으로 줄이면 이렇습니다.',
+};
+
+/* 산지니와 함께 도는 세 동료 */
+const MATES = [
+  { name: '규정', d: 'M5 17.5A2.5 2.5 0 0 1 7.5 15H19V4H7.5A2.5 2.5 0 0 0 5 6.5z' },
+  { name: '공고', d: 'M4 8l8 5 8-5M4 6h16v12H4z' },
+  { name: '취합', d: 'M5 6h6M5 12h6M5 18h6M14 12h5M16 9l3 3-3 3' },
+];
+
+/* ═══════════ 회의비 서류 — 7주차 「확실히 동작하는 한 기능」(10/3) ═══════════
+   BK21 대학원혁신지원비 회의비 하나만. 규칙은 지침 2026. 3. 개정본 §9(17쪽)·Ⅳ-6(4쪽) 원문과 대조했다.
+   (옛 회의비 서류 판 webapp/ 은 2021 제정본 1인 3만 원 — 여기로 옮기며 고침)
+   적은 내용은 이 화면 안에서만 계산한다. 서버로 가는 것은 사용 횟수('plan'·'after')뿐. */
+const MEET = {
+  fund: 'BK21 대학원혁신지원사업 (대학회계)',
+  dept: '연구처 연구진흥과',
+  unitMax: 50000,             // §9 「지급기준: 5만원 이내/1인」(다과·식대 포함)
+  lateHour: 22,               // §9 주의사항 「22시 이후 심야 시간대」
+  card: '법인 클린카드',
+  /* 주류 위주 업종 — Ⅳ-6 클린카드 제한업종(기획재정부 집행지침). 이름만 보고 띄우는 1차 알림 */
+  liquorWords: ['호프','맥주','비어','주막','포차','바(','bar','펍','pub','소주','막걸리','와인','술집','이자카야','노래'],
+  /* 근무지(부산·양산·김해 권역) 밖으로 보이는 지역어 — §9 「관할 근무지와 무관한 지역」 1차 알림 */
+  homeWords: ['부산','양산','김해','장전','금정','부산대'],
+  remoteWords: ['서울','인천','대구','대전','광주','울산','세종','제주','강원','경기','수원','춘천','청주','전주','목포','여수','포항','경주','창원','천안','속초','강릉'],
+  /* 대외비 표시어 — 판정이 아니라 "복사한 문서를 조심해 다루라"는 알림 */
+  confidentialWords: ['대외비','비공개','보안과제','민감과제','내부자료','인사자료','confidential'],
+};
+/* 예산과목은 직접 적는다 — 부서 세부사업 이름은 공개 화면에 싣지 않는다(9/27 보류 건). 예시는 ○○ */
+const SAMPLE_LINE = 'BK21 대학원혁신지원사업-○○사업-업무추진비-사업추진업무추진비';
+/* 2026 공휴일(대체공휴일 포함, MM-DD) — 담당자가 연초에 갱신 */
+const HOLIDAYS_2026 = ['01-01','02-16','02-17','02-18','03-01','03-02','05-01','05-05','05-24','05-25','06-03','06-06','08-15','08-17','09-24','09-25','09-26','09-28','10-03','10-05','10-09','12-25'];
+const DOW = ['일','월','화','수','목','금','토'];
+
+const won = n => (Number(n) || 0).toLocaleString('ko-KR') + '원';
+function ymd(d){ const a = String(d || '').split('-').map(Number); return { y: a[0], m: a[1], d: a[2] }; }
+function dowOf(d){ const t = ymd(d); return new Date(Date.UTC(t.y, t.m - 1, t.d)).getUTCDay(); }
+function fmtDate(d){ if(!d) return ''; const t = ymd(d); return t.y + '. ' + t.m + '. ' + t.d + '.(' + DOW[dowOf(d)] + ')'; }
+function fmtDateShort(d){ if(!d) return ''; const t = ymd(d); return "'" + String(t.y).slice(2) + '.' + t.m + '.' + t.d; }
+function isHoliday(d){ return !!d && HOLIDAYS_2026.indexOf(d.slice(5)) >= 0; }
+function isWeekend(d){ if(!d) return false; const w = dowOf(d); return w === 0 || w === 6; }
+function hourOf(t){ return t ? Number(String(t).split(':')[0]) : NaN; }
+function addDays(d, n){ const t = ymd(d); return new Date(Date.UTC(t.y, t.m - 1, t.d + n)).toISOString().slice(0, 10); }
+/* 다듬은 것 ①: 오늘 날짜는 PC 시간대와 상관없이 한국 시간으로(옛 판은 UTC로 세어 아침 9시 전엔 하루 밀렸다) */
+function todayKST(ms){ return new Date((typeof ms === 'number' ? ms : Date.now()) + 9 * 3600 * 1000).toISOString().slice(0, 10); }
+/* 다듬은 것 ②: 예시 날짜 = 다음 근무일(옛 판은 '내일'이라 10/8에 누르면 한글날이 들어가 빨강이 떴다) */
+function nextBizDay(d){ let x = addDays(d, 1); for(let i = 0; i < 14 && (isWeekend(x) || isHoliday(x)); i++) x = addDays(x, 1); return x; }
+
+/* 서류 칸의 개인정보 — 창구 질문보다 넓게 본다(공문·회의록에 그대로 옮겨 적히므로) */
+function findPIDocs(text){
+  if(!text) return null;
+  if(/\d{6}\s*-\s*[1-4]\d{6}/.test(text)) return '주민등록번호·외국인등록번호';
+  if(/\b\d{4}[- ]\d{4}[- ]\d{4}[- ]\d{4}\b/.test(text)) return '카드번호';
+  for(const s of (text.match(/\d{2,6}[- ]\d{2,6}[- ]\d{4,8}/g) || [])){
+    const digits = s.replace(/\D/g, '');
+    if(digits.length >= 11) return /^01[016789]/.test(digits) ? '휴대전화번호' : '계좌번호로 보이는 숫자';
+  }
+  if(/(계좌번호|통장번호|카드번호|여권번호)/.test(text)) return '계좌·신분 번호 표현';
+  return null;
+}
+
+function preChecks(p){
+  const c = []; const add = (lv, b, s) => c.push({ lv: lv, b: b, s: s || '' });
+  const miss = [];
+  if(!p.title) miss.push('제목'); if(!p.date) miss.push('일자'); if(!p.place) miss.push('장소');
+  if(!p.count) miss.push('인원'); if(!p.unit) miss.push('단가'); if(!p.budgetLine) miss.push('예산과목');
+  if(miss.length) add('bad', '아직 안 채워진 칸이 있어요: ' + miss.join(', '), '공문과 원인행위 적요에 그대로 들어가는 항목이에요.');
+  const all = [p.title, p.agenda, p.place, p.docno, (p.people || []).join(' ')].join(' ');
+  const pi = findPIDocs(all);
+  if(pi) add('bad', '개인정보로 보이는 값이 있어요: ' + pi, '이 화면은 저장·전송하지 않지만, 공문·회의록에 옮겨 적히면 유출 경로가 됩니다. 지우고 다시 확인하세요. 성명은 참석자 칸에만.');
+  const conf = MEET.confidentialWords.find(w => all.toLowerCase().indexOf(w.toLowerCase()) >= 0);
+  if(conf) add('warn', '"' + conf + '" 표시가 있는 내용이에요 — 대외비 취급', '회의 제목·내용은 공문과 원인행위 적요로 그대로 나갑니다. 공개 문서에 적을 수 있는 표현인지 확인하세요.');
+  if(p.unit > MEET.unitMax) add('bad', '1인 한도 ' + won(MEET.unitMax) + '을 넘었어요 — 지금 ' + won(p.unit), '2026. 3. 개정 지침 §9는 1인 5만 원 이내예요(다과·식대 포함). 단가를 낮추거나 인원을 조정하면 됩니다.');
+  else if(p.unit) add('ok', '1인 ' + won(p.unit) + ' · 한도 ' + won(MEET.unitMax) + ' 안', '소요예산 ' + won(p.unit * p.count) + ' = ' + won(p.unit) + ' × ' + p.count + '명');
+  if(p.date){
+    const wk = isWeekend(p.date), hol = isHoliday(p.date);
+    if(wk || hol) add(p.exception ? 'warn' : 'bad', fmtDate(p.date) + ' — ' + (hol ? '공휴일이에요(대체공휴일 포함)' : '주말이에요'),
+      p.exception ? '사유 문서(행사계획·출장명령·휴일근무명령 등)를 공문에 함께 붙이세요.' : '§9는 법정공휴일·토·일요일에 원칙적으로 클린카드를 쓰지 않게 해요. 사유 문서가 있으면 아래 칸을 켜 주세요.');
+    else add('ok', fmtDate(p.date) + ' — 평일', '');
+  }
+  const h = hourOf(p.time);
+  if(!isNaN(h)){
+    if(h >= MEET.lateHour) add(p.exception ? 'warn' : 'bad', '시작 ' + p.time + ' — 22시가 넘어요', '§9는 22시 이후 심야 사용을 원칙적으로 막고 있어요. 결제 시각이 22시를 넘지 않게 해 주세요.');
+    else if(h >= 20) add('warn', '시작 ' + p.time + ' — 결제가 22시를 넘지 않도록', '저녁 회의는 결제 시각을 확인하세요.');
+    else add('ok', '시작 ' + p.time, '');
+  }
+  const place = String(p.place || '');
+  const lw = MEET.liquorWords.find(w => place.toLowerCase().indexOf(w) >= 0);
+  if(lw) add('warn', '장소 "' + place + '" — 주류를 주로 파는 곳인지 확인해 주세요', '주류 위주 업종은 클린카드 제한업종이에요(지침 Ⅳ-6). 이름만 보고 띄운 것이라 업종만 한 번 확인해 주시면 됩니다.');
+  else if(place) add('ok', '장소 "' + place + '"', '');
+  const rw = MEET.remoteWords.find(w => place.indexOf(w) >= 0), hw = MEET.homeWords.find(w => place.indexOf(w) >= 0);
+  if(rw && !hw) add('warn', '"' + rw + '" — 근무지와 무관한 지역일 수 있어요', '§9는 관할 근무지와 무관한 지역에서 원칙적으로 클린카드를 쓰지 않게 해요. 출장명령·행사계획 같은 사유가 있으면 공문에 적어 주세요.');
+  const people = p.people || [];
+  if(people.length && p.count && people.length !== p.count) add('warn', '명단 ' + people.length + '명, 인원 ' + p.count + '명 — 수가 다릅니다', '공문 인원과 참석자확인서 인원을 맞춰 주세요.');
+  if(p.ext) add('info', '외부인 참석 — 소속·직위를 참석자확인서에 그대로', '외부 참석자도 서명이 필요합니다. 용역업체는 회사명을 소속에.');
+  add('info', '참석자확인서(서식7)는 결제 금액과 관계없이 붙입니다', '2026. 3. 개정 지침 §9.');
+  add('info', '담당자가 직접 확인: 휴가·출장 중인 사람이 명단에 없는지, 같은 시간대 다른 회의와 겹치지 않는지', '봇은 근무 상황을 모릅니다.');
+  add('info', '결제는 ' + MEET.card + '로만 · 회의 뒤 후식(커피 등)에 다시 쓰지 않기', '지침 Ⅳ-6 · §9.');
+  return c;
+}
+function verdictOf(checks){
+  if(checks.some(c => c.lv === 'bad')) return { lv: 'bad', t: '이대로 올리면 반려될 수 있어요', s: '빨간 항목만 고치면 됩니다' };
+  if(checks.some(c => c.lv === 'warn')) return { lv: 'warn', t: '올릴 수 있어요 · 확인할 점이 있습니다', s: '노란 항목은 공문에 사유나 첨부로 남기세요' };
+  return { lv: 'ok', t: '규칙표로는 걸리는 것이 없어요', s: '최종 판단은 담당자·결재선이 합니다' };
+}
+function renderChecks(checks){
+  const v = verdictOf(checks);
+  const mark = lv => lv === 'ok' ? '✓' : lv === 'bad' ? '⚠' : lv === 'warn' ? '!' : 'i';
+  return '<div class="verdict ' + v.lv + '">' + mark(v.lv) + ' ' + v.t + ' <small>· ' + v.s + '</small></div><div class="checks">'
+    + checks.map(c => '<div class="ck ' + c.lv + '"><i>' + mark(c.lv) + '</i><div><b>' + esc(c.b) + '</b>' + (c.s ? '<small>' + esc(c.s) + '</small>' : '') + '</div></div>').join('') + '</div>';
+}
+function summarizePeople(list, count){
+  // "연구진흥과 과장 ○○○" → 직위만 모아 "과장, 팀장, 담당자 등 총 N명"
+  const titles = list.map(s => { const parts = s.replace(/\(.*?\)/g, '').trim().split(/\s+/); return parts.length >= 2 ? parts[parts.length - 2] : parts[0]; });
+  return Array.from(new Set(titles)).slice(0, 4).join(', ') + ' 등 총 ' + count + '명';
+}
+/* 공문 본문(신형 적요 0~6과 같은 구조) */
+function docBody(p){
+  const total = p.unit * p.count;
+  const who = (p.people || []).length ? summarizePeople(p.people, p.count) : '총 ' + p.count + '명';
+  return [
+    '제목: ' + p.title,
+    '',
+    MEET.fund + ' 추진과 관련하여 아래와 같이 회의를 개최하고자 하니 검토 후 결재하여 주시기 바랍니다.',
+    '',
+    '1. 개최일시 : ' + fmtDate(p.date) + ' ' + (p.time || '') + '~',
+    '2. 개최장소 : ' + p.place,
+    '3. 회의내용 : ' + (p.agenda || '(회의 내용 한 줄)'),
+    '4. 참석인원 : ' + who,
+    '5. 소요예산 : 총 ' + won(total) + '(' + won(p.unit) + ' × ' + p.count + '명)',
+    '6. 예산과목 : ' + p.budgetLine,
+    '',
+    '※ 결제: ' + MEET.card + ' · 증빙: 카드매출전표(서식1)·회의록(서식6)·참석자확인서(서식7, 금액과 관계없이)',
+    (isWeekend(p.date) || isHoliday(p.date) || hourOf(p.time) >= MEET.lateHour) ? '※ 예외 사유: (행사계획·출장명령·휴일근무명령 등 문서명 기재)' : null,
+  ].filter(x => x !== null).join('\n');
+}
+/* 원인행위 입력표 — a(영수증)가 있으면 확정, 없으면 예정 */
+function actRows(p, a){
+  const total = a ? a.paid : p.unit * p.count;
+  const n = a ? a.realCount : p.count;
+  const who = (p.people || []).length ? summarizePeople(p.people, n) : '총 ' + n + '명';
+  const memo = [
+    p.docno ? '0. 관련 : ' + p.docno + '(' + fmtDate(p.date).replace(/\(.\)/, '') + ')' : '0. 관련 : (기안 공문번호)',
+    '1. 개최일시 : ' + fmtDate(p.date) + ' ' + (p.time || '') + '~',
+    '2. 개최장소 : ' + (a && a.vendor ? a.vendor : p.place),
+    '3. 회의내용 : ' + (p.agenda || ''),
+    '4. 참석인원 : ' + who,
+    a ? '5. 소요예산 : 총 ' + won(total) + '(' + a.realCount + '명, 1인 ' + won(Math.round(total / (a.realCount || 1))) + ')'
+      : '5. 소요예산 : 총 ' + won(total) + '(' + won(p.unit) + ' × ' + p.count + '명)',
+    '6. 예산과목 : ' + p.budgetLine,
+  ].join('\n');
+  return [
+    ['건명', p.title + '(' + fmtDateShort(p.date) + ')'],
+    ['적요', memo],
+    ['금액', a ? won(a.paid) : won(total) + ' (예정 · 영수증으로 확정)'],
+    ['거래처', a && a.vendor ? a.vendor + (a.vendorNo ? ' · ' + a.vendorNo : '') : '(영수증 가맹점명 · 사업자번호)'],
+    ['지급구분', '일시불 · 분할지불 아니오'],
+    ['수령정보', '부산대학교 법인카드 결제'],
+    ['예산과목', p.budgetLine],
+    ['발의', MEET.dept + ' · 담당자'],
+  ];
+}
+function kvTable(rows, id){ return '<table class="kv" id="' + id + '">' + rows.map(r => '<tr><td>' + esc(r[0]) + '</td><td>' + esc(r[1]) + '</td></tr>').join('') + '</table>'; }
+/* 회의 뒤 점검 — 영수증 값으로 */
+function afterChecks(p, a){
+  const c = []; const add = (lv, b, s) => c.push({ lv: lv, b: b, s: s || '' });
+  const budget = p.unit * p.count;
+  if(!a.paid) add('bad', '영수증 총액이 비었습니다', '');
+  else {
+    if(a.paid > budget) add('bad', '영수증 ' + won(a.paid) + ' > 기안 예산 ' + won(budget), '초과분은 집행할 수 없습니다. 변경 결재 또는 개인 부담.');
+    else add('ok', '영수증 ' + won(a.paid) + ' ≤ 기안 예산 ' + won(budget), '');
+    const per = a.realCount ? a.paid / a.realCount : 0;
+    if(per > MEET.unitMax) add('bad', '1인당 ' + won(Math.round(per)) + ' > 한도 ' + won(MEET.unitMax), '실제 참석 인원 기준입니다(지침 §9).');
+    else if(a.realCount) add('ok', '1인당 ' + won(Math.round(per)) + ' · 한도 이내', '');
+  }
+  if(a.payDate){
+    if(a.payDate !== p.date) add('bad', '결제일 ' + fmtDate(a.payDate) + ' ≠ 개최일 ' + fmtDate(p.date), '결제일과 개최일이 같아야 합니다. 다르면 사유서.');
+    else add('ok', '결제일 = 개최일', '');
+    if((isWeekend(a.payDate) || isHoliday(a.payDate)) && !p.exception) add('bad', '결제일이 주말·공휴일', '사유 문서가 없으면 원칙적으로 클린카드를 쓰지 않습니다(§9).');
+  }
+  const h = hourOf(a.payTime);
+  if(!isNaN(h)){ if(h >= MEET.lateHour) add('bad', '결제 ' + a.payTime + ' — 22시 이후', '지침 §9'); else add('ok', '결제 ' + a.payTime, ''); }
+  if(a.realCount !== p.count) add('warn', '실제 ' + a.realCount + '명 ≠ 계획 ' + p.count + '명', '회의록·참석자확인서·적요 인원을 실제 인원으로 맞추세요.');
+  else add('ok', '참석 인원 ' + a.realCount + '명 = 계획', '');
+  if(MEET.liquorWords.find(w => String(a.vendor || '').toLowerCase().indexOf(w) >= 0)) add('warn', '가맹점 "' + a.vendor + '" — 주류 위주 업종인지 확인', '클린카드 제한업종(지침 Ⅳ-6)');
+  if(!a.minutes) add('warn', '회의 내용이 비었습니다', '회의록 본문에 두세 줄은 있어야 합니다.');
+  add('info', '회의 뒤 후식(커피·아이스크림 등)에 회의비를 다시 쓰지 않았는지', '지침 §9');
+  return c;
+}
+/* 예시 — 이름은 ○○○, 날짜는 다음 근무일 */
+function samplePlan(today){
+  return { title: '2026학년도 우수 연구성과 글로벌 홍보 업무협의 간담회 개최', agenda: '하반기 홍보 대상 논문 선정 기준 및 배포 일정 협의',
+    date: nextBizDay(today || todayKST()), time: '12:00', place: '학교 인근 식당',
+    people: ['연구진흥과 과장 ○○○', '연구진흥과 팀장 ○○○', '연구진흥과 담당자 ○○○', '용역업체 실무자 ○○○ (외부)'],
+    count: 4, unit: 30000, docno: '', budgetLine: SAMPLE_LINE, ext: true, exception: false };
+}
+
+/* ───────── 검색 ───────── */
+function findPI(text){
+  if(!text) return null;
+  if(/\d{6}\s*-\s*[1-4]\d{6}/.test(text)) return '주민등록번호';
+  if(/\b\d{4}[- ]\d{4}[- ]\d{4}[- ]\d{4}\b/.test(text)) return '카드번호';
+  for(const s of (text.match(/\d{2,6}[- ]\d{2,6}[- ]\d{4,8}/g) || [])){
+    if(s.replace(/\D/g,'').length >= 11) return '계좌·전화번호로 보이는 숫자';
+  }
+  return null;
+}
+function searchRules(q){
+  const s = String(q || '').trim();
+  if(!s) return [];
+  const words = s.replace(/[?!.,]/g,' ').split(/\s+/).filter(w => w.length >= 2);
+  const scored = RULES_DB.map(r => {
+    let score = 0;
+    const hay = r.title + ' ' + r.keys.join(' ') + ' ' + r.lines.map(l => l.join(' ')).join(' ');
+    r.keys.forEach(k => { if(s.includes(k)) score += 10; });
+    if(s.includes(r.title)) score += 20;
+    words.forEach(w => { if(hay.includes(w)) score += 2; });
+    return { r: r, score: score };
+  }).filter(x => x.score >= 10).sort((a,b) => b.score - a.score);
+  return scored.slice(0,3).map(x => x.r);
+}
+function route(text){
+  const q = String(text || '').trim();
+  const pi = findPI(q);
+  if(pi) return { to:'stop', why:'개인정보로 보이는 값이 있어요: ' + pi + '. 지우고 다시 적어 주세요.' };
+  if(/공고|공모|접수|과제/.test(q)) return { to:'notice' };
+  if(/주간회의|주간 회의|주간보고|회의자료|업무보고/.test(q)) return { to:'weekly' };
+  if(DO_WORDS.some(w => q.indexOf(w) >= 0) && DOCS_WORDS.some(w => q.indexOf(w) >= 0)) return { to:'docs' };   // "서류 만들어야 해요" → 회의비 서류
+  return { to:'rule' };
+}
+/* 서류를 "만들어야" 한다는 말만 서류 화면으로 — 한도를 묻는 말은 규정 답으로 */
+const DOCS_WORDS = ['회의비','간담회','다과','기안','공문','회의록','참석자확인서','서식','원인행위','지출증빙'];
+const DO_WORDS = ['만들','써야','작성','준비','내야','뽑아','필요해','해야 해','하려고'];
+
+/* ───────── 화면 ───────── */
+const $ = s => document.querySelector(s);
+function esc(s){ return String(s == null ? '' : s).replace(/[&<>]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;'}[c])); }
+function toast(m){ const t = $('#toast'); if(!t) return; t.textContent = m; t.style.opacity = 1; t.style.transform = 'translateX(-50%)';
+  clearTimeout(t._h); t._h = setTimeout(() => { t.style.opacity = 0; t.style.transform = 'translateX(-50%) translateY(18px)'; }, 1600); }
+function copyText(txt){
+  try{ const ta = document.createElement('textarea'); ta.value = txt; document.body.appendChild(ta); ta.select(); document.execCommand('copy'); ta.remove(); toast('복사했습니다'); }
+  catch(e){ toast('길게 눌러 복사해 주세요'); }
+}
+function copyPrompt(which){ copyText(PROMPTS[which]); }
+
+const CHIPS = ['회의비 1인 한도가 얼마예요?','법인카드로 언제 결제하면 안 되나요?','국외 출장 숙박비는 어떻게 정산해요?','참석자확인서는 꼭 있어야 하나요?','새로 뜬 공고 있나요'];
+
+function ruleCard(r){
+  return '<div class="card rule"><div class="in"><div class="h"><i></i>' + esc(r.title) + '</div><div class="b"><dl>'
+    + r.lines.map(l => '<dt>' + esc(l[0]) + '</dt><dd>' + esc(l[1]) + '</dd>').join('')
+    + '</dl><div class="basis"><b>근거</b> · ' + esc(r.basis) + '</div>'
+    + (r.note ? '<div class="note">' + esc(r.note) + '</div>' : '')
+    + (r.title === '회의비 · 간담회비' ? '<div class="todocs"><button class="btn p s" onclick="openDocs()">이 회의, 서류까지 만들어 보기 &#8594;</button></div>' : '')
+    + '</div></div></div>';
+}
+function noResult(){
+  return '<div class="card"><div class="in none"><b>여기서는 찾지 못했습니다</b><p>지어내지 않겠습니다. 이런 건 담당자에게 물어보시는 편이 빠릅니다. 실제 규정봇은 자료 전체를 읽고 답하니 더 넓게 찾습니다.</p></div></div>';
+}
+function showAnswer(target, q){
+  const r = route(q);
+  if(r.to === 'stop'){ $(target).innerHTML = '<div class="card"><div class="in stop">' + esc(r.why) + ' 어느 곳으로도 보내지 않았습니다.</div></div>'; return; }
+  if(r.to === 'notice'){ open3('notice'); return; }
+  if(r.to === 'weekly'){ open3('weekly'); return; }
+  if(r.to === 'docs'){ openDocs(); return; }
+  const found = searchRules(q);
+  $(target).innerHTML = found.length ? found.map(ruleCard).join('') : noResult();
+  sjThink(false);
+  if(found.length) sjMood('joy', 1600);
+}
+function askGo(){ const v = $('#ask').value.trim(); if(v){ showAnswer('#ans', v); if(route(v).to !== 'stop') countUse('ask'); } }
+function askGo2(){ const v = $('#ask2').value.trim(); if(v){ showAnswer('#ans2', v); if(route(v).to !== 'stop') countUse('ask'); } }
+
+const PANELS = EXITS.concat(['docs']);   // 출구 셋 + 회의비 서류(출구 1 안쪽)
+function goHome(){ PANELS.forEach(k => $('#p-' + k).classList.remove('on')); $('#home').style.display = 'block'; window.scrollTo(0,0); }
+function open3(which){
+  $('#home').style.display = 'none';
+  PANELS.forEach(k => $('#p-' + k).classList.toggle('on', k === which));
+  window.scrollTo(0,0);
+  if(which === 'weekly') resetWeekly();
+  countUse('exit');
+}
+function openDocs(){ open3('docs'); }
+
+/* ───────── 회의비 서류 화면 ───────── */
+let PLAN = null;
+function peopleList(){ return String($('#d-people').value || '').split('\n').map(s => s.trim()).filter(Boolean); }
+function budgetLineValue(){ return String($('#d-line').value || '').trim(); }
+function showBudget(){ const b = $('#d-budget'); if(b) b.textContent = won((+$('#d-count').value || 0) * (+$('#d-unit').value || 0)); }
+function readPlan(){
+  const people = peopleList();
+  return { title: String($('#d-title').value || '').trim(), agenda: String($('#d-agenda').value || '').trim(), date: $('#d-date').value, time: $('#d-time').value,
+    place: String($('#d-place').value || '').trim(), people: people, count: +$('#d-count').value || people.length || 0,
+    unit: +$('#d-unit').value || 0, docno: String($('#d-docno').value || '').trim(), budgetLine: budgetLineValue(),
+    ext: !!$('#d-ext').checked, exception: !!$('#d-exc').checked };
+}
+function copyOut(id){ const e = document.getElementById(id); copyText(e ? (e.innerText || e.textContent || '') : ''); }
+function runPlan(){
+  const p = readPlan(); PLAN = p;
+  const checks = preChecks(p);
+  const blocked = !p.title || !p.date || !p.count || !p.unit;
+  let h = renderChecks(checks);
+  if(!blocked){
+    h += '<div class="out"><h4>기안 공문 본문 초안 <button class="btn g s" onclick="copyOut(\'d-doc\')">복사</button></h4><pre id="d-doc">' + esc(docBody(p)) + '</pre></div>';
+    h += '<div class="out"><h4>원인행위 입력표(예정) <button class="btn g s" onclick="copyOut(\'d-act\')">복사</button></h4>' + kvTable(actRows(p, null), 'd-act') + '</div>';
+    h += '<div class="out"><h4>증빙 네 가지 · 누가 언제</h4><div class="evid">'
+      + '<div class="ev"><b>① 기안 공문(내부결재)</b><small>위 본문을 KORUS 내부결재에 붙여 넣기</small><span class="who">담당자 · 회의 전</span></div>'
+      + '<div class="ev"><b>② 카드매출전표 → 서식1 부착</b><small>일자·내역·금액 · 결제일 = 개최일</small><span class="who">담당자 · 회의 직후</span></div>'
+      + '<div class="ev"><b>③ 서식6 회의록</b><small>제목·일시·장소·작성자·관리자·참석자·회의 내용 → 3단계에서 채움</small><span class="who">담당자 · 회의 뒤</span></div>'
+      + '<div class="ev"><b>④ 서식7 참석자확인서</b><small>소속·직위·성명·서명 ' + p.count + '명' + (p.ext ? '(외부인 포함)' : '') + ' · 금액과 관계없이</small><span class="who">참석자 서명</span></div>'
+      + '</div></div>';
+    $('#d-after').open = true; $('#a-count').value = p.count; $('#a-date').value = p.date;
+    $('#d-meta').textContent = fmtDate(p.date) + ' · ' + p.count + '명 · ' + won(p.unit * p.count);
+    countUse('plan');
+  } else { $('#d-meta').textContent = '빈 칸을 채우면 서류가 나옵니다'; }
+  $('#d-out').innerHTML = h;
+  $('#d-result').scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+function runAfter(){
+  if(!PLAN || !PLAN.title){ toast('먼저 1단계 회의 계획으로 「서류 만들기」를 눌러 주세요'); $('#d-result').scrollIntoView({ behavior: 'smooth' }); return; }
+  const p = PLAN;
+  const a = { paid: +$('#a-paid').value || 0, realCount: +$('#a-count').value || p.count, payDate: $('#a-date').value, payTime: $('#a-time').value,
+    vendor: String($('#a-vendor').value || '').trim(), vendorNo: String($('#a-vno').value || '').trim(), minutes: String($('#a-min').value || '').trim() };
+  const p2 = Object.assign({}, p, { count: a.realCount });
+  const minutes = [
+    '【서식 6】 대학원혁신지원사업 회의록',
+    '제 목: ' + p.title,
+    '일 시: ' + fmtDate(p.date) + ' ' + (p.time || '') + '~',
+    '장 소: ' + (a.vendor || p.place),
+    '작성자: (담당자)      관리자: (팀장)',
+    '참석자: ' + ((p.people || []).length ? p.people.map(s => s.replace(/\s*\(외부\)\s*/, '')).join(', ') : '(소속·직위·성명 ' + a.realCount + '명)'),
+    '',
+    '■ 회의 내용',
+    a.minutes || '○ (회의 내용)',
+  ].join('\n');
+  const receipt = [
+    '【서식 1】 대학원혁신지원사업 지출 증빙 영수증',
+    '사업명: ' + (String(p.budgetLine).split('-')[1] || '').trim(),
+    '일  자: ' + fmtDate(p.date) + ' ' + (p.time || '') + '~',
+    '내  역: 회의비(' + (p.agenda || p.title) + ')' + (a.vendor ? ' · ' + a.vendor : ''),
+    '금  액: ' + won(a.paid),
+    '(카드매출전표 부착)',
+  ].join('\n');
+  let h = renderChecks(afterChecks(p, a));
+  h += '<div class="out"><h4>원인행위 입력표(확정) <button class="btn g s" onclick="copyOut(\'a-act\')">복사</button></h4>' + kvTable(actRows(p2, a), 'a-act') + '</div>';
+  h += '<div class="out"><h4>서식6 회의록 <button class="btn g s" onclick="copyOut(\'a-min-out\')">복사</button></h4><pre id="a-min-out">' + esc(minutes) + '</pre></div>';
+  h += '<div class="out"><h4>서식1 지출 증빙 영수증 <button class="btn g s" onclick="copyOut(\'a-rc\')">복사</button></h4><pre id="a-rc">' + esc(receipt) + '</pre></div>';
+  h += '<div class="out"><h4>서식7 참석자확인서</h4><div class="ev"><b>' + a.realCount + '명 서명란</b><small>소속·직위·성명은 회의록 참석자와 같은 순서로. 외부인은 기관명을 소속에.</small></div></div>';
+  $('#a-out').innerHTML = h;
+  countUse('after');
+  $('#a-out').scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+function fillSample(){
+  const p = samplePlan(todayKST());
+  $('#d-title').value = p.title; $('#d-agenda').value = p.agenda; $('#d-date').value = p.date; $('#d-time').value = p.time;
+  $('#d-place').value = p.place; $('#d-people').value = p.people.join('\n'); $('#d-count').value = p.count; $('#d-unit').value = p.unit;
+  $('#d-docno').value = ''; $('#d-line').value = p.budgetLine;
+  $('#d-ext').checked = p.ext; $('#d-exc').checked = p.exception;
+  showBudget(); toast('예시를 채웠습니다 · 날짜는 다음 근무일 · 이름은 ○○○');
+}
+function resetDocs(){
+  ['d-title','d-agenda','d-date','d-place','d-people','d-count','d-unit','d-docno','d-line','a-paid','a-count','a-date','a-time','a-vendor','a-vno','a-min'].forEach(id => { $('#' + id).value = ''; });
+  $('#d-time').value = '12:00';
+  $('#d-ext').checked = false; $('#d-exc').checked = false; PLAN = null; showBudget();
+  $('#d-out').innerHTML = '<div class="empty">왼쪽에 회의 계획을 적고 「서류 만들기」를 누르세요.</div>';
+  $('#a-out').innerHTML = '<div class="empty">회의가 끝나면 영수증 값을 넣으세요.</div>';
+  $('#d-meta').textContent = '왼쪽에 적고 버튼'; $('#d-after').open = false;
+}
+function initDocs(){
+  const pe = $('#d-people');
+  if(!pe || !pe.addEventListener) return;
+  pe.addEventListener('input', () => { const n = peopleList().length; if(n) $('#d-count').value = n; showBudget(); });
+  ['d-count','d-unit'].forEach(id => $('#' + id).addEventListener('input', showBudget));
+}
+
+function renderMail(){
+  const body = NOTICES.map(n =>
+    '<div class="nt"><div class="top"><div class="t">' + esc(n.title) + '</div><div class="d' + (n.soon ? ' soon' : '') + '">' + esc(n.due) + '</div></div>'
+    + '<div class="org">' + esc(n.org) + '</div>'
+    + '<div class="ai"><b>AI 요약</b><br>' + esc(n.summary) + '</div>'
+    + (n.fit ? '<div class="fit">추천 분야 · ' + esc(n.fit) + '</div>'
+             : '<div class="fit no">추천 분야 없음 · 자격 요건이 공고문에 없어 고르지 못했습니다</div>')
+    + '</div>').join('');
+  $('#mail').innerHTML =
+    '<div class="mh"><div class="subj">[연구공고] 오늘 새로 올라온 공고 ' + NOTICES.length + '건</div>'
+    + '<div class="meta">연구진흥과 공고봇 · 매일 오전 10:00 · 예시 화면</div></div>'
+    + '<div class="mb">' + body + '</div>';
+}
+
+let wkAt = 0, wkTimer = null;
+function renderWeekly(){
+  const s = WEEKLY_STEPS[wkAt];
+  $('#wk-label').textContent = s.label;
+  $('#wk-shot').innerHTML = s.shot;
+  $('#wk-say').textContent = s.say;
+  $('#wk-bar').innerHTML = WEEKLY_STEPS.map((_, i) => '<i class="' + (i <= wkAt ? 'on' : '') + '"></i>').join('');
+}
+function playWeekly(){
+  stopWeekly();
+  wkTimer = setInterval(() => {
+    wkAt = (wkAt + 1) % WEEKLY_STEPS.length;
+    renderWeekly();
+    if(wkAt === WEEKLY_STEPS.length - 1) stopWeekly();
+  }, 3200);
+  renderWeekly();
+}
+function stopWeekly(){ if(wkTimer){ clearInterval(wkTimer); wkTimer = null; } }
+function resetWeekly(){ stopWeekly(); wkAt = 0; renderWeekly(); }
+
+function renderHow(){
+  EXITS.forEach(k => {
+    const box = $('#how-' + k);
+    if(!box) return;
+    box.innerHTML = '<div class="in">'
+      + '<div class="hd"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 3l1.9 5.4L19 10l-5.1 1.6L12 17l-1.9-5.4L5 10l5.1-1.6z"/></svg><b>AI에게 이렇게 물어보세요</b></div>'
+      + '<div class="lead">' + esc(PROMPT_LEAD[k]) + ' 코드를 받아 가시는 것보다, 이 문장을 그대로 넣고 부서 사정에 맞게 직접 만드시는 편이 낫습니다.</div>'
+      + '<div class="p">' + esc(PROMPTS[k]) + '</div>'
+      + '<div class="act"><button onclick="copyPrompt(\'' + k + '\')">이 문장 복사</button></div></div>';
+  });
+}
+
+/* 움직이는 산지니 — 질문을 적는 동안 갸웃(말줄임 풍선), 답이 나오면 폴짝(웃는 눈·반짝), 가끔 날개 인사 */
+const sjTimers = {};
+function sjMood(m, ms){
+  const s = $('#sanjini');
+  if(!s || !s.classList) return;
+  s.classList.remove(m); void s.offsetWidth; s.classList.add(m);     // 이미 하고 있으면 처음부터 다시
+  if(ms){ clearTimeout(sjTimers[m]); sjTimers[m] = setTimeout(() => s.classList.remove(m), ms); }
+}
+function sjThink(on){ const s = $('#sanjini'); if(s && s.classList) s.classList.toggle('think', !!on); }
+function sjIdle(){
+  const reduce = typeof matchMedia === 'function' && matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if(reduce || typeof setInterval !== 'function') return;          // 움직임 줄이기 설정이면 저절로 움직이지 않음
+  setTimeout(() => sjMood('wave', 1400), 1200);                     // 처음 열면 한 번 인사
+  setInterval(() => { if(!document.hidden) sjMood('wave', 1400); }, 9000);
+}
+
+/* 산지니 둘레를 도는 세 동료 */
+function renderMates(){
+  const box = $('#mates');
+  if(!box || box.innerHTML === undefined) return;
+  box.innerHTML = MATES.map((m, i) => {
+    const deg = (i / MATES.length) * 360 - 90;
+    return '<div class="mate" style="transform:rotate(' + deg + 'deg) translate(calc(50cqmin - 24px)) rotate(' + (-deg) + 'deg)" title="' + m.name + '">'
+      + '<div class="in"><span class="lb">' + m.name + '</span><svg viewBox="0 0 24 24" fill="none" stroke="#8AE1FF" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="' + m.d + '"/></svg></div></div>';
+  }).join('');
+}
+
+/* 배경 신경망 */
+function startSky(){
+  const c = document.getElementById('sky');
+  if(!c || !c.getContext) return;
+  const reduce = typeof matchMedia === 'function' && matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const ctx = c.getContext('2d');
+  let w = 0, h = 0, pts = [];
+  function size(){
+    w = c.width = window.innerWidth; h = c.height = window.innerHeight;
+    const n = Math.min(72, Math.round(w * h / 22000));
+    pts = Array.from({ length: n }, () => ({
+      x: Math.random() * w, y: Math.random() * h,
+      vx: (Math.random() - .5) * .22, vy: (Math.random() - .5) * .22,
+      r: Math.random() * 1.5 + .5,
+    }));
+  }
+  function draw(){
+    ctx.clearRect(0, 0, w, h);
+    for(const p of pts){
+      if(!reduce){ p.x += p.vx; p.y += p.vy; }
+      if(p.x < 0 || p.x > w) p.vx *= -1;
+      if(p.y < 0 || p.y > h) p.vy *= -1;
+    }
+    for(let i = 0; i < pts.length; i++){
+      for(let j = i + 1; j < pts.length; j++){
+        const a = pts[i], b = pts[j];
+        const d = Math.hypot(a.x - b.x, a.y - b.y);
+        if(d < 132){
+          ctx.strokeStyle = 'rgba(77,208,255,' + (0.13 * (1 - d / 132)).toFixed(3) + ')';
+          ctx.lineWidth = 1;
+          ctx.beginPath(); ctx.moveTo(a.x, a.y); ctx.lineTo(b.x, b.y); ctx.stroke();
+        }
+      }
+    }
+    for(const p of pts){
+      ctx.fillStyle = 'rgba(138,225,255,.5)';
+      ctx.beginPath(); ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2); ctx.fill();
+    }
+    if(!reduce) requestAnimationFrame(draw);
+  }
+  size(); draw();
+  window.addEventListener('resize', () => { size(); if(reduce) draw(); });
+}
+
+/* 시연 진행용: 링크 하나로 특정 출구를 연다. #rule · #notice · #weekly · #ask=질문 */
+function openByHash(){
+  try{
+    const h = String(location.hash || '').replace(/^#/, '');
+    if(!h) return;
+    if(h.indexOf('ask=') === 0){ const q = decodeURIComponent(h.slice(4)); $('#ask').value = q; showAnswer('#ans', q); return; }
+    if(PANELS.indexOf(h) >= 0) open3(h);
+  }catch(e){}
+}
+
+(function init(){
+  const chips = $('#chips');
+  if(chips && chips.innerHTML !== undefined){
+    chips.innerHTML = CHIPS.map((c,i) => '<button class="chip" data-i="' + i + '">' + c + '</button>').join('');
+    const chips2 = $('#chips2');
+    if(chips2) chips2.innerHTML = CHIPS.slice(0,4).map((c,i) => '<button class="chip" data-j="' + i + '">' + c + '</button>').join('');
+  }
+  if(typeof document.addEventListener === 'function'){
+    document.addEventListener('click', e => {
+      const b = e.target && e.target.closest ? e.target.closest('.chip') : null;
+      if(!b) return;
+      if(b.dataset.i !== undefined){ $('#ask').value = CHIPS[b.dataset.i]; askGo(); }
+      else if(b.dataset.j !== undefined){ $('#ask2').value = CHIPS[b.dataset.j]; askGo2(); }
+    });
+  }
+  ['ask','ask2'].forEach(id => {
+    const a = $('#' + id);
+    if(!a || !a.addEventListener) return;
+    a.addEventListener('input', () => {
+      a.style.height = 'auto'; a.style.height = Math.min(a.scrollHeight, 130) + 'px';
+      if(id === 'ask') sjThink(a.value.trim().length > 0);
+    });
+    a.addEventListener('blur', () => { if(id === 'ask') sjThink(false); });
+    a.addEventListener('keydown', e => { if(e.key === 'Enter' && !e.shiftKey){ e.preventDefault(); id === 'ask' ? askGo() : askGo2(); } });
+  });
+  document.querySelectorAll('.exit').forEach(b => b.addEventListener('mouseenter', () => sjMood('wave', 1400)));
+  renderMates(); renderMail(); renderHow(); renderLinks(); resetWeekly(); initDocs(); sjIdle(); loadStats();
+  if(typeof window !== 'undefined' && window.requestAnimationFrame) startSky();
+  openByHash();
+  if(typeof window !== 'undefined' && window.addEventListener) window.addEventListener('hashchange', openByHash);
+})();
+</script>
+</body>
+</html>

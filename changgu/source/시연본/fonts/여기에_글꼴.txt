@@ -1,0 +1,1 @@
+Pretendard(무료, SIL Open Font License 1.1)의 PretendardVariable.woff2 를 이 폴더에 두면 공개판과 같은 모양으로 빌드됩니다.
