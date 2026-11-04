@@ -1,0 +1,8 @@
+# 서버에 올리는 것은 아래뿐 — 검사(tests/)·안내문·규정 원문 txt 는 올리지 않는다(tests 가 올라가면 웹 앱이 깨짐)
+**/**
+!Code.gs
+!Rg.gs
+!index.html
+!rg_docs.html
+!rg_data_*.html
+!appsscript.json
