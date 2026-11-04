@@ -1068,6 +1068,12 @@ function realCard(x){
     + (x.docs ? '<div class="todocs"><button class="btn p s" onclick="openDocs()">이 회의, 서류까지 만들어 보기 &#8594;</button></div>' : '')
     + '</div></div></div>';
 }
+/* 11/4: 미리 기록한 답은 「같은 질문」일 때만 — 낱말 하나(「식대」)로 엉뚱한 기록(회의비)이 나오던 것을 막음. 나머지는 AI가 직접 */
+function realNorm(s){ return String(s || '').replace(/[\s?？.!~·,]/g, ''); }
+function realExact(q){
+  const n = realNorm(q);
+  return REAL.qa.filter(x => realNorm(x.chip) === n || realNorm(x.q) === n);
+}
 function realFind(q){
   const s = String(q || '');
   const hit = REAL.qa.filter(x => !x.none && x.keys.some(k => s.indexOf(k) >= 0));
@@ -1103,7 +1109,7 @@ function showAnswer(target, q){
   if(r.to === 'docs'){ openDocs(); return; }
   if(MODE === 'live' && typeof cgAsk === 'function'){ cgAsk(target, q); return; }   /* 실제판(11/4): 규정 질문은 서버 rgAsk */
   if(MODE === 'public' && REAL.qa && REAL.qa.length){
-    const hit = realFind(q);
+    const hit = typeof cgAsk === 'function' ? realExact(q) : realFind(q);   /* 서버가 있으면 같은 질문만 기록으로, 없으면(내려받은 파일) 낱말로 */
     if(!hit.length && typeof cgAsk === 'function'){ cgAsk(target, q); return; }   /* 기록에 없는 질문 → 창구 서버(11/4) */
     $(target).innerHTML = hit.length ? hit.map(realCard).join('') : realNone('offline');
     sjThink(false); if(hit.length) sjMood('joy', 1600);
