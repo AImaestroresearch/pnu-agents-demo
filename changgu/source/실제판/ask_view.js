@@ -17,8 +17,8 @@
   }catch(e){}
 })();
 /* 못 찾음·연결 안 됨: 공개판은 직접 만드는 길 + 「없다」 예시(realNone), 실제판은 짧은 안내 */
-function cgNoneCard(kind, msg){
-  if(typeof realNone === 'function') return realNone(kind, msg);
+function cgNoneCard(kind, msg, q){
+  if(typeof realNone === 'function') return realNone(kind, msg, q);
   return '<div class="card"><div class="in none"><b>' + (kind === 'none' ? '넣어 둔 공개 규정에서 찾지 못했습니다' : '지금은 서버에 닿지 않습니다') + '</b><p>'
     + esc(kind === 'none' ? (msg || '이 질문에 답하려면 관련 규정을 더 넣어야 합니다. 연구진흥과에 문의해 주세요.') : '조금 뒤 다시 해 주세요.') + '</p></div></div>';
 }
@@ -112,5 +112,5 @@ function cgAsk(target, q){
   const done = function(html, joy){ CG_BUSY = false; sjThink(false); $(target).innerHTML = html; if(joy) sjMood('joy', 1600); };
   cgAskSend(q)
     .then(function(r){ done(cgCard(q, r, (Date.now() - t0) / 1000), r && r.mode === 'ai' && !r.notFound); if(r && r.ok && r.dayMax) cgRenderStat(r); },
-          function(){ done(cgNoneCard('offline'), false); });
+          function(){ done(cgNoneCard('offline', null, q), false); });
 }

@@ -110,11 +110,11 @@ function rgAsk(q, cid, token) {
   var gate = rgGate_(cid);
   if (!gate.ok) return searchOnly(gate.msg);
 
-  var models = rgModels_();
+  var models = rgModels_(), sawMinute = false;
   for (var i = 0; i < models.length; i++) {
     var m = models[i];
     var cache = CacheService.getScriptCache();
-    if (cache.get('RG_OFF_' + m)) continue;
+    if (cache.get('RG_OFF2_' + m)) continue;
     var r = rgCallModel_(m, key, rgPrompt_(q, sources));
     if (r.ok && r.text) r.text = rgTidy_(r.text, sources);
     if (r.ok && r.text) {
@@ -137,13 +137,21 @@ function rgAsk(q, cid, token) {
       // 두 번 찾아도 없으면 「못 한다 + 이런 규정이 더 필요」 — 화면이 「답할 수 없는 질문」으로 따로 보여 준다
       return rgWithQuota_({ ok: true, mode: 'ai', notFound: true, answer: r.text, sources: sources.slice(0, 3), model: m, tries: top2.length ? 2 : 1 }, cid);
     }
-    if (r.code === 429) cache.put('RG_OFF_' + m, '1', 3600);       // 그 모델 무료 한도 참 → 1시간 쉬고 다음 모델
-    else if (r.code === 404 || r.code === 400) cache.put('RG_OFF_' + m, '1', 21600);   // 이름이 없는 모델 → 6시간 건너뜀
+    if (r.code === 429 && r.daily) cache.put('RG_OFF2_' + m, '1', rgSecToMidnight_());   // 그 모델 하루 무료 한도 참 → 오늘 자정(태평양 시각 기준 리셋 전)까지 쉬고 다음 모델
+    else if (r.code === 429) { sawMinute = true; cache.put('RG_OFF2_' + m, '1', Math.min(120, Math.max(30, (r.wait || 60) + 5))); }   // 1분 한도 → 잠깐만 쉼
+    else if (r.code === 404 || r.code === 400) cache.put('RG_OFF2_' + m, '1', 21600);   // 이름이 없는 모델 → 6시간 건너뜀
   }
   rgRefund_(cid);   // AI 답을 못 줬으면 하루·한 사람 횟수에서 뺀다
+  if (sawMinute) return searchOnly('지금 묻는 분이 많아 무료 AI가 잠시 쉬고 있습니다. 1분 뒤 다시 해 주세요. 아래는 AI 없이 찾은 관련 조항 원문입니다.');
   return searchOnly('오늘 무료 AI 답변이 다 쓰였습니다. 내일 다시 써 보세요. 아래는 AI 없이 찾은 관련 조항 원문입니다. 같은 도구를 직접 만드실 수도 있습니다.');
 }
 
+// 하루 한도로 꺼진 모델을 언제까지 쉴지(초): 구글 무료 한도는 태평양 시각 자정에 다시 채워짐 → 넉넉히 다음 리셋까지, 최대 6시간(캐시 한계)
+function rgSecToMidnight_() {
+  var now = new Date(), pt = new Date(now.getTime() - 8 * 3600 * 1000);   // 태평양 표준시 근사(UTC-8)
+  var left = 86400 - (pt.getUTCHours() * 3600 + pt.getUTCMinutes() * 60 + pt.getUTCSeconds());
+  return Math.max(300, Math.min(21600, left + 60));
+}
 function rgIsNotFound_(text) { return /^\s*넣어 둔 공개 규정에서는 찾지 못했습니다/.test(String(text)); }
 // AI 답 정리(11/4 점검표): 줄 이름(「1줄:」 등)·굵은 글씨 표시를 지우고, 「※ 더 확인하시려면 …」 줄이 없으면 근거 문서 이름으로 붙인다
 function rgTidy_(text, sources) {
@@ -319,7 +327,8 @@ function rgPrompt_(q, sources) {
     '아래 [자료]는 공개된 규정·지침에서 찾은 조각입니다. 반드시 [자료]에 적힌 내용만으로 답하세요.',
     '',
     '[답 모양 — 바쁜 직원이 한눈에 보고 바로 일할 수 있게, 짧게. 아래 예처럼 쓰고, 「1줄:」 같은 줄 이름은 쓰지 않습니다]',
-    '첫째 줄은 결론, 둘째 줄은 근거(규정 이름·조항·개정일), 셋째 줄은 예외·조건이 있을 때만, 마지막은 ※ 줄입니다. 예)',
+    '첫째 줄은 결론, 둘째 줄은 근거(규정 이름·조항·개정일), 셋째 줄은 예외·조건이 있을 때만, 마지막은 ※ 줄입니다.',
+    '셋째 줄(예외·조건)은 [자료]의 해당 문장을 거의 그대로 옮깁니다. 「~할 수 없다」를 「조건이 따를 수 있다」처럼 흐리거나, 여러 문장을 섞어 뜻을 바꾸지 않습니다. 옮길 문장이 없으면 셋째 줄은 쓰지 않습니다. 예)',
     '1인당 50,000원 이내입니다 [2].',
     '「○○ 사업비 집행지침」 제9조(2026. 3. 개정) [2]',
     '다과·식대를 포함하며, 회의록과 참석자 확인서가 필요합니다 [2].',
@@ -331,7 +340,9 @@ function rgPrompt_(q, sources) {
     '3. 근거 번호 [n]은 그 조각에 실제로 그 내용이 있을 때만 붙입니다. 둘 이상이면 [1][3]처럼 하나씩 붙입니다.',
     '4. 같은 항목이 여러 판으로 있으면 개정일이 가장 최근인 자료와 「현행요약」을 따릅니다. 옛 판 숫자는 쓰지 않습니다.',
     '5. 질문에 재원(BK21·국립대학육성사업·연구과제 연구비·대학회계 등)이 적혀 있으면 그 재원의 자료로만 답합니다. 다른 재원의 기준은 한 문장에 섞지 않습니다.',
-    '   질문에 재원이 없는데 재원마다 기준이 다르면, 재원별로 한 줄씩 나눠 씁니다(예: BK21 22시 이후 / 국가연구개발사업 23시~6시).',
+    '   질문에 재원이 없는데 재원마다 기준이 다르면, 결론 줄을 재원별로 한 줄씩 나눠 씁니다. 한 재원만 골라 답하지 않습니다.',
+    '   예) 「회의비 한도?」 → BK21 대학원혁신지원비 1인 50,000원 [n] / 국립대학육성사업 1인 50,000원 이내 [n] / 연구과제 연구비 식비 1인 50,000원 [n] (자료에 있는 재원만).',
+    '   신분(직원·교수 등)이나 지역 등급에 따라 금액이 다르고 질문에 신분이 없으면, 「일반 직원」 기준을 먼저 쓰고 교수·부교수 금액을 한 줄 덧붙입니다.',
     '   「BK21」처럼 이름이 같아도 재원이 둘이면(교육연구단 사업비 = 한국연구재단 「4단계 BK21 예산편성 및 집행기준」 / 대학원혁신지원비 = 부산대 「BK21 대학원혁신 사업비 편성 및 집행지침」) 둘 다 한 줄씩 씁니다.',
     '6. 「찾지 못했습니다」는 [자료]를 끝까지 다시 읽어도 답이 정말 없을 때만 씁니다. 조문이 「별표 ○에 따라」처럼 다른 곳을 가리키면 그것이 답입니다(예: 「별표 4에 정해져 있습니다」).',
     '   [자료]로 답할 수 없으면 억지로 답을 만들지 말고 아래 세 줄만 씁니다(괄호 안만 알맞게 채우고, 줄 이름은 쓰지 않습니다).',
@@ -361,7 +372,12 @@ function rgCallModel_(model, key, prompt) {
                                 generationConfig: { temperature: 0, maxOutputTokens: 900 } })   // 11/4 점검표: 같은 질문엔 같은 답(흔들림 줄이기)
     });
     var code = res.getResponseCode();
-    if (code !== 200) return { ok: false, code: code };
+    if (code !== 200) {
+      // 11/4: 429 거절 이유를 읽는다 — 1분 한도(잠깐 쉬면 됨)인지 하루 한도(오늘은 끝)인지. 같은 「429」라도 대응이 다르다
+      var body = String(res.getContentText('UTF-8') || '').slice(0, 4000);
+      var wait = Number((body.match(/"retryDelay"\s*:\s*"(\d+)/) || [])[1] || 0);
+      return { ok: false, code: code, daily: /PerDay|per day|daily/i.test(body), wait: wait };
+    }
     var j = JSON.parse(res.getContentText('UTF-8'));
     var parts = (((j.candidates || [])[0] || {}).content || {}).parts || [];
     var text = parts.filter(function (p) { return p.text && !p.thought; }).map(function (p) { return p.text; }).join('').trim();

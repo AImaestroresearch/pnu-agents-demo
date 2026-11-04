@@ -12,6 +12,10 @@ SIZE, OVER, PER_FILE = 900, 150, 330_000   # 조각 길이 · 겹침 · 파일 �
 # 현행 자료(옛 숫자보다 먼저) — 찾기 점수에 곱함
 BOOST = {'[현행요약]': 1.6, '(2025.11.27 개정)_본문': 1.3, '연구비 관리 세부 지침 전문(2026. 9. 1.)': 1.2}
 
+ART_RE = re.compile(r'제\d+조(?:의\d+)?\([^()\n]{1,40}\)')   # 조문 머리: 제16조(일비ㆍ숙박비ㆍ식비의 지급)
+NO_HEAD_RE = re.compile(r'업무지침|사례집|기본지침|100문100답|현행요약|집행기준|집행지침|Q&A')
+
+
 def clean(s):
     s = s.replace('\r', '').replace(' ', ' ').replace('​', '')
     s = re.sub(r'[ \t]+', ' ', s)
@@ -29,9 +33,13 @@ for path in sorted(glob.glob(os.path.join(SRC, '*.txt'))):
     pages = [(0, parts[0])] if parts[0].strip() else []
     for i in range(1, len(parts), 2): pages.append((int(parts[i]), parts[i + 1]))
     if not pages: pages = [(0, raw)]
+    # 11/4: 조각이 조문 중간에서 시작하면 앞에 그 조문 머리를 붙인다(「제16조(…) 이어서」) — AI도 채점기도 어느 조문인지 알게
     for pno, text in pages:
         text = clean(text)
         if len(text) < 20: continue
+        # 줄 맨 앞 = 진짜 조문 머리. 해설서·사례집·집행지침처럼 남의 조문을 인용만 하는 문서는 붙이지 않음(엉뚱한 머리 방지)
+        arts = [] if NO_HEAD_RE.search(title) else \
+            [(m.start(), m.group(0)) for m in ART_RE.finditer(text) if m.start() == 0 or text[m.start() - 1] == chr(10)]
         pos = 0
         while pos < len(text):
             end = min(len(text), pos + SIZE)
@@ -39,6 +47,10 @@ for path in sorted(glob.glob(os.path.join(SRC, '*.txt'))):
                 cut = max(text.rfind('\n', pos + SIZE // 2, end), text.rfind('. ', pos + SIZE // 2, end))
                 if cut > pos: end = cut + 1
             piece = text[pos:end].strip()
+            before = [a for a in arts if a[0] <= pos and pos - a[0] <= 3000]   # 같은 쪽 안, 3천 자 안에서만
+            head = before[-1][1] if before else ''
+            if head and not ART_RE.match(piece):
+                piece = '[' + head + ' 이어서] ' + piece
             if len(piece) >= 20: chunks.append([di, pno, piece])
             if end >= len(text): break
             pos = max(end - OVER, pos + 1)
